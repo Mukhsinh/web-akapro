@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Award, CheckCircle, Download, X, BookOpen, Target, FileText } from 'lucide-react';
+import { CheckCircle, Download, X, BookOpen, Target, FileText } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { supabase } from '../lib/supabaseClient';
@@ -60,18 +60,10 @@ const Sertifikasi = () => {
     return (
         <div style={{ background: 'var(--midnight-carbon)', minHeight: '100vh', padding: '60px 20px', color: 'white' }}>
             <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-                <header style={{ textAlign: 'center', marginBottom: '64px' }}>
-                    <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ marginBottom: '24px', display: 'inline-block' }}>
-                        <div style={{ padding: '20px', borderRadius: '30px', background: 'rgba(198, 255, 0, 0.1)', border: '1px solid var(--electric-lime)' }}>
-                            <Award size={48} color="var(--electric-lime)" />
-                        </div>
-                    </motion.div>
-                    <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ fontSize: 'clamp(28px, 6vw, 48px)', fontWeight: '900', marginBottom: '16px' }}>
+                <header style={{ textAlign: 'center', marginBottom: '80px' }}>
+                    <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: '900' }}>
                         Sertifikasi Kompetensi
                     </motion.h2>
-                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} style={{ color: 'rgba(255,255,255,0.5)', fontSize: '16px', maxWidth: '700px', margin: '0 auto' }}>
-                        Tingkatkan kredibilitas profesional Anda dengan sertifikasi yang diakui secara nasional. Kurikulum yang disusun oleh praktisi ahli.
-                    </motion.p>
                 </header>
 
                 <div style={{

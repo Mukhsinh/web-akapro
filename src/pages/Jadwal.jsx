@@ -259,15 +259,21 @@ const Jadwal = () => {
         <div style={{ background: 'var(--midnight-carbon)', minHeight: '100vh', padding: '60px 20px', color: 'white' }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <header style={{ textAlign: 'center', marginBottom: '80px' }}>
-                    <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ background: 'rgba(198, 255, 0, 0.1)', display: 'inline-block', padding: '20px', borderRadius: '30px', marginBottom: '24px', border: '1px solid var(--electric-lime)' }}>
-                        <Calendar size={48} color="var(--electric-lime)" />
-                    </motion.div>
-                    <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ fontSize: 'clamp(32px, 6vw, 56px)', fontWeight: '900', marginBottom: '16px', letterSpacing: '-1px' }}>
-                        Jadwal Pelatihan & Workshop
+                    <motion.h2
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        style={{
+                            fontSize: 'clamp(32px, 8vw, 64px)',
+                            fontWeight: '900',
+                            letterSpacing: '-2px',
+                            background: 'linear-gradient(to bottom, #fff 50%, rgba(255,255,255,0.4))',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            lineHeight: '1.1'
+                        }}
+                    >
+                        Jadwal Pelatihan
                     </motion.h2>
-                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} style={{ color: 'rgba(255,255,255,0.4)', fontSize: '18px', maxWidth: '800px', margin: '0 auto' }}>
-                        Tingkatkan kompetensi Anda melalui program pelatihan terstruktur dengan narasumber praktisi ahli di bidangnya.
-                    </motion.p>
                 </header>
 
                 <div style={{
