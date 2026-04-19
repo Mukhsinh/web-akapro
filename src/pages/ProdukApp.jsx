@@ -332,7 +332,7 @@ const ProdukApp = () => {
                                                 background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                 boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
                                             }}>
-                                                {React.cloneElement(selectedApp.icon, { color: 'black', size: 28 })}
+                                                <img src={selectedApp.iconUrl} alt={selectedApp.shortTitle} style={{ width: '32px', height: '32px', objectFit: 'contain' }} />
                                             </div>
                                         </div>
 

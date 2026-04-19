@@ -2,57 +2,57 @@ import { motion } from 'framer-motion';
 import { MessageCircle, BookOpen, TrendingUp, Shield, Users, Target, Award, Briefcase, BarChart } from 'lucide-react';
 
 const programs = [
-    { 
-        title: 'Penganggaran RS', 
-        color: '#C6FF00', 
+    {
+        title: 'Penganggaran RS',
+        color: '#C6FF00',
         icon: BarChart,
         description: 'Penyusunan anggaran rumah sakit yang efektif dan efisien'
     },
-    { 
-        title: 'Penatausahaan BLUD', 
-        color: '#00D9FF', 
+    {
+        title: 'Penatausahaan BLUD',
+        color: '#00D9FF',
         icon: BookOpen,
         description: 'Pengelolaan keuangan BLUD sesuai regulasi terkini'
     },
-    { 
-        title: 'Unit Cost RS', 
-        color: '#FF6B6B', 
+    {
+        title: 'Unit Cost RS',
+        color: '#FF6B6B',
         icon: TrendingUp,
         description: 'Perhitungan biaya satuan layanan kesehatan yang akurat'
     },
-    { 
-        title: 'Renstra RS', 
-        color: '#4ECDC4', 
+    {
+        title: 'Renstra RS',
+        color: '#4ECDC4',
         icon: Target,
         description: 'Perencanaan strategis untuk pengembangan rumah sakit'
     },
-    { 
-        title: 'Manajemen Resiko', 
-        color: '#FFD93D', 
+    {
+        title: 'Manajemen Resiko',
+        color: '#FFD93D',
         icon: Shield,
         description: 'Identifikasi dan mitigasi risiko operasional RS'
     },
-    { 
-        title: 'Manajemen Komplain', 
-        color: '#A8E6CF', 
+    {
+        title: 'Manajemen Komplain',
+        color: '#A8E6CF',
         icon: Users,
         description: 'Penanganan keluhan pasien secara profesional'
     },
-    { 
-        title: 'Survey Kepuasan', 
-        color: '#FF8B94', 
+    {
+        title: 'Survey Kepuasan',
+        color: '#FF8B94',
         icon: Award,
         description: 'Pengukuran dan peningkatan kepuasan pelanggan'
     },
-    { 
-        title: 'Distribusi Insentif', 
-        color: '#C7CEEA', 
+    {
+        title: 'Distribusi Insentif',
+        color: '#C7CEEA',
         icon: Briefcase,
         description: 'Sistem pembagian insentif yang adil dan transparan'
     },
-    { 
-        title: 'Manajemen KPI', 
-        color: '#FFDAC1', 
+    {
+        title: 'Manajemen KPI',
+        color: '#FFDAC1',
         icon: BarChart,
         description: 'Monitoring dan evaluasi indikator kinerja utama'
     },
@@ -68,7 +68,7 @@ const Pelatihan = () => {
         <div style={{
             background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%)',
             minHeight: '100vh',
-            padding: '100px 20px 40px',
+            padding: '16px 20px 40px',
             position: 'relative',
             overflow: 'hidden'
         }}>
@@ -97,8 +97,8 @@ const Pelatihan = () => {
             }} />
 
             {/* Header */}
-            <motion.div 
-                initial={{ opacity: 0, y: 20 }} 
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 style={{ position: 'relative', zIndex: 1 }}
             >
@@ -114,10 +114,10 @@ const Pelatihan = () => {
                         PROFESSIONAL TRAINING
                     </span>
                 </div>
-                <h1 style={{ 
-                    fontSize: '42px', 
-                    fontWeight: '900', 
-                    color: 'white', 
+                <h1 style={{
+                    fontSize: '42px',
+                    fontWeight: '900',
+                    color: 'white',
                     marginBottom: '12px',
                     background: 'linear-gradient(135deg, #ffffff 0%, #c6ff00 100%)',
                     WebkitBackgroundClip: 'text',
@@ -134,8 +134,8 @@ const Pelatihan = () => {
             {/* Modern Grid Cards with 3D Isometric Style */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '24px',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',
+                gap: '12px',
                 marginBottom: '80px',
                 position: 'relative',
                 zIndex: 1
@@ -153,13 +153,13 @@ const Pelatihan = () => {
                             style={{
                                 background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)',
                                 backdropFilter: 'blur(20px)',
-                                borderRadius: '28px',
-                                padding: '32px',
+                                borderRadius: '20px',
+                                padding: '20px 16px',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'flex-start',
                                 justifyContent: 'space-between',
-                                minHeight: '280px',
+                                minHeight: '220px',
                                 cursor: 'pointer',
                                 border: '1px solid rgba(255,255,255,0.1)',
                                 position: 'relative',
@@ -169,13 +169,13 @@ const Pelatihan = () => {
                             onClick={handleWhatsApp}
                         >
                             {/* Animated Gradient Background */}
-                            <motion.div 
-                                animate={{ 
+                            <motion.div
+                                animate={{
                                     scale: [1, 1.2, 1],
                                     rotate: [0, 90, 0]
                                 }}
-                                transition={{ 
-                                    duration: 20, 
+                                transition={{
+                                    duration: 20,
                                     repeat: Infinity,
                                     ease: "linear"
                                 }}
@@ -187,30 +187,30 @@ const Pelatihan = () => {
                                     height: '200%',
                                     background: `radial-gradient(circle, ${prog.color}15 0%, transparent 50%)`,
                                     filter: 'blur(60px)'
-                                }} 
+                                }}
                             />
 
                             {/* 3D Isometric Icon Container */}
-                            <motion.div 
+                            <motion.div
                                 whileHover={{ rotateY: 15, rotateX: -10 }}
                                 style={{
-                                    width: '80px',
-                                    height: '80px',
+                                    width: '56px',
+                                    height: '56px',
                                     background: `linear-gradient(135deg, ${prog.color} 0%, ${prog.color}dd 100%)`,
-                                    borderRadius: '20px',
+                                    borderRadius: '14px',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    marginBottom: '24px',
-                                    boxShadow: `0 12px 32px ${prog.color}50, inset 0 -4px 8px rgba(0,0,0,0.2)`,
+                                    marginBottom: '14px',
+                                    boxShadow: `0 8px 24px ${prog.color}50, inset 0 -4px 8px rgba(0,0,0,0.2)`,
                                     position: 'relative',
                                     zIndex: 1,
                                     transform: 'perspective(1000px) rotateX(5deg) rotateY(-5deg)',
                                     transformStyle: 'preserve-3d'
                                 }}
                             >
-                                <Icon size={40} color="rgba(0,0,0,0.8)" strokeWidth={2.5} />
-                                
+                                <Icon size={28} color="rgba(0,0,0,0.8)" strokeWidth={2.5} />
+
                                 {/* 3D Shadow Effect */}
                                 <div style={{
                                     position: 'absolute',
@@ -229,50 +229,50 @@ const Pelatihan = () => {
                             {/* Content */}
                             <div style={{ position: 'relative', zIndex: 1, flex: 1 }}>
                                 <h3 style={{
-                                    fontSize: '20px',
+                                    fontSize: '14px',
                                     fontWeight: '900',
                                     color: 'white',
                                     lineHeight: 1.2,
-                                    marginBottom: '12px',
-                                    letterSpacing: '-0.5px'
+                                    marginBottom: '8px',
+                                    letterSpacing: '-0.3px'
                                 }}>
                                     {prog.title}
                                 </h3>
 
                                 <p style={{
-                                    fontSize: '14px',
+                                    fontSize: '12px',
                                     color: 'rgba(255,255,255,0.65)',
-                                    lineHeight: 1.6,
-                                    marginBottom: '20px'
+                                    lineHeight: 1.5,
+                                    marginBottom: '12px'
                                 }}>
                                     {prog.description}
                                 </p>
                             </div>
 
                             {/* CTA Badge */}
-                            <motion.div 
+                            <motion.div
                                 whileHover={{ x: 5 }}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '8px',
-                                    padding: '10px 16px',
+                                    gap: '6px',
+                                    padding: '7px 10px',
                                     background: `linear-gradient(135deg, ${prog.color}20 0%, ${prog.color}10 100%)`,
-                                    borderRadius: '12px',
+                                    borderRadius: '10px',
                                     border: `1px solid ${prog.color}40`,
                                     position: 'relative',
                                     zIndex: 1
                                 }}
                             >
-                                <span style={{ 
-                                    fontSize: '13px', 
-                                    fontWeight: '700', 
+                                <span style={{
+                                    fontSize: '11px',
+                                    fontWeight: '700',
                                     color: prog.color,
-                                    letterSpacing: '0.5px'
+                                    letterSpacing: '0.3px'
                                 }}>
-                                    Silakan Chat Kami
+                                    Chat Kami
                                 </span>
-                                <motion.span 
+                                <motion.span
                                     animate={{ x: [0, 4, 0] }}
                                     transition={{ duration: 1.5, repeat: Infinity }}
                                     style={{ color: prog.color, fontSize: '16px', fontWeight: '900' }}

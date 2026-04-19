@@ -58,3 +58,8 @@ body {
   transform: scale(1.05);
   box-shadow: 0 0 15px var(--electric-lime);
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

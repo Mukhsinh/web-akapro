@@ -5,12 +5,12 @@ import NavigationDock from './components/NavigationDock';
 import ErrorBoundary from './components/ErrorBoundary';
 
 const Home = lazy(() => import('./pages/Home'));
+const Artikel = lazy(() => import('./pages/Artikel'));
 const ProdukApp = lazy(() => import('./pages/ProdukApp'));
 const Pelatihan = lazy(() => import('./pages/Pelatihan'));
 const Jadwal = lazy(() => import('./pages/Jadwal'));
 const Sertifikasi = lazy(() => import('./pages/Sertifikasi'));
 const TentangKami = lazy(() => import('./pages/TentangKami'));
-const Artikel = lazy(() => import('./pages/Artikel'));
 const Mitra = lazy(() => import('./pages/Mitra'));
 const PusatBantuan = lazy(() => import('./pages/PusatBantuan'));
 const PintarUC = lazy(() => import('./pages/PintarUC'));
@@ -39,7 +39,7 @@ const PageLoader = () => (
 function App() {
     return (
         <ErrorBoundary>
-            <Router>
+            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <div className="app-container">
                     <Header />
                     <main style={{ paddingBottom: '100px' }}>
