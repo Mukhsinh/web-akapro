@@ -1,16 +1,11 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import PageHeader from '../components/PageHeader';
+import useDemo from '../hooks/useDemo';
 
 const PintarJP = () => {
-    const navigate = useNavigate();
+    const handleDemo = useDemo('PINTAR JP');
     useEffect(() => { window.scrollTo(0, 0); }, []);
-
-    const handleDemo = () => {
-        const text = "Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi PINTAR JP.";
-        window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, '_blank');
-    };
 
     const features = [
         { icon: '⚖️', title: 'Distribusi Adil', desc: 'Perhitungan insentif berbasis KPI individu & unit secara proporsional.' },
@@ -29,56 +24,38 @@ const PintarJP = () => {
     return (
         <div style={{ background: '#f0f9ff', minHeight: '100vh', fontFamily: 'Inter, sans-serif', paddingBottom: '60px' }}>
 
-            {/* HEADER */}
-            <div style={{ position: 'relative', background: 'linear-gradient(160deg, #0284c7 0%, #0c4a6e 100%)', paddingBottom: '40px' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
-                    <svg style={{ position: 'absolute', bottom: 0, right: 0, opacity: 0.1 }} width="200" height="200" viewBox="0 0 200 200">
-                        <circle cx="150" cy="50" r="80" fill="white" />
-                        <circle cx="50" cy="150" r="60" fill="white" />
-                    </svg>
-                </div>
-                <div style={{ position: 'absolute', bottom: '-1px', left: 0, right: 0, height: '40px', background: '#f0f9ff', borderRadius: '40px 40px 0 0' }} />
-
-                <div style={{ padding: '16px 20px 0', display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
-                    <button onClick={() => navigate(-1)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', flexShrink: 0 }}>
-                        <ArrowLeft size={18} />
-                    </button>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.15)', borderRadius: '20px', padding: '6px 14px', backdropFilter: 'blur(8px)' }}>
-                        <div style={{ width: '24px', height: '24px', borderRadius: '7px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <span style={{ color: '#0284c7', fontSize: '11px', fontWeight: '900' }}>J</span>
-                        </div>
-                        <span style={{ fontSize: '15px', fontWeight: '900', color: 'white', letterSpacing: '0.5px' }}>PINTAR-JP</span>
-                    </div>
-                </div>
-
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-                    style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'flex-start', gap: '16px', position: 'relative' }}>
-                    <div style={{ flex: 1 }}>
-                        <h1 style={{ fontSize: '20px', fontWeight: '900', color: 'white', lineHeight: 1.25, margin: 0 }}>
-                            Distribusi Insentif Jasa Pelayanan Berbasis KPI
-                            <span style={{ display: 'block', color: '#bae6fd', marginTop: '4px', fontSize: '15px', fontWeight: '700' }}>
-                                Keadilan untuk Setiap Tenaga Medis
-                            </span>
-                        </h1>
-                        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, margin: '10px 0 0' }}>
-                            KPI Individu · KPI Unit · Jasa Medis · PPh 21 · Slip Digital
-                        </p>
-                    </div>
-                    <div style={{ width: '110px', flexShrink: 0, height: '120px', borderRadius: '20px', background: 'rgba(255,255,255,0.12)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.2)', backdropFilter: 'blur(8px)' }}>
-                        <svg viewBox="0 0 100 100" width="90" height="90">
-                            <rect x="20" y="55" width="12" height="30" rx="3" fill="rgba(255,255,255,0.4)" />
-                            <rect x="36" y="40" width="12" height="45" rx="3" fill="rgba(255,255,255,0.6)" />
-                            <rect x="52" y="30" width="12" height="55" rx="3" fill="rgba(255,255,255,0.8)" />
-                            <rect x="68" y="20" width="12" height="65" rx="3" fill="white" />
-                            <path d="M26 52 L42 37 L58 27 L74 17" stroke="#bae6fd" strokeWidth="2" strokeLinecap="round" fill="none" />
-                            <circle cx="26" cy="52" r="3" fill="#bae6fd" />
-                            <circle cx="42" cy="37" r="3" fill="#bae6fd" />
-                            <circle cx="58" cy="27" r="3" fill="#bae6fd" />
-                            <circle cx="74" cy="17" r="3" fill="#bae6fd" />
+            <PageHeader
+                gradient="linear-gradient(160deg, #0284c7 0%, #0c4a6e 100%)"
+                bgColor="#f0f9ff"
+                label="PINTAR-JP"
+                labelColor="#0284c7"
+                badgeLetter="J"
+                title="Distribusi Insentif Jasa Pelayanan Berbasis KPI"
+                subtitle="Keadilan untuk Setiap Tenaga Medis"
+                subtitleColor="#bae6fd"
+                description="KPI Individu · KPI Unit · Jasa Medis · PPh 21 · Slip Digital"
+                decorators={
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
+                        <svg style={{ position: 'absolute', bottom: 0, right: 0, opacity: 0.1 }} width="200" height="200" viewBox="0 0 200 200">
+                            <circle cx="150" cy="50" r="80" fill="white" />
+                            <circle cx="50" cy="150" r="60" fill="white" />
                         </svg>
                     </div>
-                </motion.div>
-            </div>
+                }
+                illustration={
+                    <svg viewBox="0 0 100 100" width="90" height="90">
+                        <rect x="20" y="55" width="12" height="30" rx="3" fill="rgba(255,255,255,0.4)" />
+                        <rect x="36" y="40" width="12" height="45" rx="3" fill="rgba(255,255,255,0.6)" />
+                        <rect x="52" y="30" width="12" height="55" rx="3" fill="rgba(255,255,255,0.8)" />
+                        <rect x="68" y="20" width="12" height="65" rx="3" fill="white" />
+                        <path d="M26 52 L42 37 L58 27 L74 17" stroke="#bae6fd" strokeWidth="2" strokeLinecap="round" fill="none" />
+                        <circle cx="26" cy="52" r="3" fill="#bae6fd" />
+                        <circle cx="42" cy="37" r="3" fill="#bae6fd" />
+                        <circle cx="58" cy="27" r="3" fill="#bae6fd" />
+                        <circle cx="74" cy="17" r="3" fill="#bae6fd" />
+                    </svg>
+                }
+            />
 
             <div style={{ padding: '20px 20px 0' }}>
                 <p style={{ fontSize: '13px', color: '#0c4a6e', lineHeight: 1.7, margin: 0 }}>

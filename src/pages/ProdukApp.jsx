@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Database, ShieldCheck, MessageSquare, Landmark, BrainCircuit, X, MessageCircle, ArrowRight, User, Phone, Building, ChevronRight, ChevronLeft, Crown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';

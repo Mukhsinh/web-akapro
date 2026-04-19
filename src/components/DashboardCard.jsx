@@ -1,4 +1,3 @@
-import React from 'react';
 import { Megaphone, ArrowRight } from 'lucide-react';
 
 const DashboardCard = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
 import { LogOut, Plus, Edit, Trash2, Save } from 'lucide-react';
@@ -9,7 +9,6 @@ const Admin = () => {
     const [activeTab, setActiveTab] = useState('pelatihan');
     const [pelatihan, setPelatihan] = useState([]);
     const [artikel, setArtikel] = useState([]);
-    const [konten, setKonten] = useState([]);
 
     useEffect(() => {
         checkUser();
@@ -38,12 +37,6 @@ const Admin = () => {
             .select('*')
             .order('created_at', { ascending: false });
         setArtikel(artikelData || []);
-
-        // Load konten
-        const { data: kontenData } = await supabase
-            .from('konten_halaman')
-            .select('*');
-        setKonten(kontenData || []);
     };
 
     const handleLogin = async (e) => {

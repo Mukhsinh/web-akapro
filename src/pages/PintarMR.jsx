@@ -1,16 +1,11 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import PageHeader from '../components/PageHeader';
+import useDemo from '../hooks/useDemo';
 
 const PintarMR = () => {
-    const navigate = useNavigate();
+    const handleDemo = useDemo('PINTAR MR');
     useEffect(() => { window.scrollTo(0, 0); }, []);
-
-    const handleDemo = () => {
-        const text = "Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi PINTAR MR.";
-        window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, '_blank');
-    };
 
     const features = [
         { icon: '🛡️', title: 'ISO 31000', desc: 'Kerangka manajemen risiko internasional yang terstandarisasi.' },
@@ -28,57 +23,33 @@ const PintarMR = () => {
     return (
         <div style={{ background: '#f0f2f8', minHeight: '100vh', fontFamily: 'Inter, sans-serif', paddingBottom: '60px' }}>
 
-            {/* HEADER */}
-            <div style={{ position: 'relative', background: 'linear-gradient(160deg, #6c3fc5 0%, #3a1a8a 100%)', paddingBottom: '40px' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
-                    {[...Array(6)].map((_, i) => (
-                        <div key={i} style={{
-                            position: 'absolute',
-                            width: `${60 + i * 30}px`, height: `${60 + i * 30}px`,
-                            borderRadius: '50%',
-                            border: '1px solid rgba(255,255,255,0.08)',
-                            top: `${10 + i * 8}%`, right: `${-10 + i * 5}%`,
-                        }} />
-                    ))}
-                </div>
-                <div style={{ position: 'absolute', bottom: '-1px', left: 0, right: 0, height: '40px', background: '#f0f2f8', borderRadius: '40px 40px 0 0' }} />
-
-                <div style={{ padding: '16px 20px 0', display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
-                    <button onClick={() => navigate(-1)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', flexShrink: 0 }}>
-                        <ArrowLeft size={18} />
-                    </button>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.15)', borderRadius: '20px', padding: '6px 14px', backdropFilter: 'blur(8px)' }}>
-                        <div style={{ width: '24px', height: '24px', borderRadius: '7px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <span style={{ color: '#6c3fc5', fontSize: '11px', fontWeight: '900' }}>M</span>
-                        </div>
-                        <span style={{ fontSize: '15px', fontWeight: '900', color: 'white', letterSpacing: '0.5px' }}>PINTAR-MR</span>
+            <PageHeader
+                gradient="linear-gradient(160deg, #6c3fc5 0%, #3a1a8a 100%)"
+                bgColor="#f0f2f8"
+                label="PINTAR-MR"
+                labelColor="#6c3fc5"
+                badgeLetter="M"
+                title="Manajemen Risiko Terintegrasi Berbasis ISO 31000"
+                subtitle="Lindungi Institusi dari Risiko Tersembunyi"
+                subtitleColor="#d4b8ff"
+                description="ISO 31000 · Renstra · Balance Scorecard · Risk Register · Mitigasi Otomatis"
+                decorators={
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
+                        {[...Array(6)].map((_, i) => (
+                            <div key={i} style={{ position: 'absolute', width: `${60 + i * 30}px`, height: `${60 + i * 30}px`, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.08)', top: `${10 + i * 8}%`, right: `${-10 + i * 5}%` }} />
+                        ))}
                     </div>
-                </div>
-
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-                    style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'flex-start', gap: '16px', position: 'relative' }}>
-                    <div style={{ flex: 1 }}>
-                        <h1 style={{ fontSize: '20px', fontWeight: '900', color: 'white', lineHeight: 1.25, margin: 0 }}>
-                            Manajemen Risiko Terintegrasi Berbasis ISO 31000
-                            <span style={{ display: 'block', color: '#d4b8ff', marginTop: '4px', fontSize: '15px', fontWeight: '700' }}>
-                                Lindungi Institusi dari Risiko Tersembunyi
-                            </span>
-                        </h1>
-                        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, margin: '10px 0 0' }}>
-                            ISO 31000 · Renstra · Balance Scorecard · Risk Register · Mitigasi Otomatis
-                        </p>
-                    </div>
-                    <div style={{ width: '110px', flexShrink: 0, height: '120px', borderRadius: '20px', background: 'rgba(255,255,255,0.12)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.2)', backdropFilter: 'blur(8px)' }}>
-                        <svg viewBox="0 0 100 100" width="90" height="90">
-                            <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
-                            <polygon points="50,22 78,36 78,64 50,78 22,64 22,36" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
-                            <polygon points="50,34 66,42 66,58 50,66 34,58 34,42" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
-                            <circle cx="50" cy="50" r="8" fill="white" opacity="0.9" />
-                            <path d="M46 50 L49 53 L55 47" stroke="#6c3fc5" strokeWidth="2" strokeLinecap="round" fill="none" />
-                        </svg>
-                    </div>
-                </motion.div>
-            </div>
+                }
+                illustration={
+                    <svg viewBox="0 0 100 100" width="90" height="90">
+                        <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
+                        <polygon points="50,22 78,36 78,64 50,78 22,64 22,36" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+                        <polygon points="50,34 66,42 66,58 50,66 34,58 34,42" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
+                        <circle cx="50" cy="50" r="8" fill="white" opacity="0.9" />
+                        <path d="M46 50 L49 53 L55 47" stroke="#6c3fc5" strokeWidth="2" strokeLinecap="round" fill="none" />
+                    </svg>
+                }
+            />
 
             <div style={{ padding: '20px 20px 0' }}>
                 <p style={{ fontSize: '13px', color: '#4a3a6a', lineHeight: 1.7, margin: 0 }}>

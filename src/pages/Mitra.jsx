@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ShoppingBag, ShoppingCart, Store, CreditCard } from 'lucide-react';
 

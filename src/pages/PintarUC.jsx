@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import PageHeader from '../components/PageHeader';
+import useDemo from '../hooks/useDemo';
 
 // Modern professional avatar SVGs for each role
 const AvatarDireksi = () => (
@@ -130,13 +130,8 @@ const IsoDiorama = ({ scene }) => {
 };
 
 const PintarUC = () => {
-    const navigate = useNavigate();
+    const handleDemo = useDemo('PINTAR UC');
     useEffect(() => { window.scrollTo(0, 0); }, []);
-
-    const handleDemo = () => {
-        const text = "Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi PINTAR UC.";
-        window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, '_blank');
-    };
 
     const users = [
         { label: 'Direksi RS', avatar: <AvatarDireksi />, bg: 'linear-gradient(160deg, #e8f0ff 0%, #d0deff 100%)', accent: '#1a3a2a' },
@@ -147,71 +142,19 @@ const PintarUC = () => {
     return (
         <div style={{ background: '#f5f5f5', minHeight: '100vh', fontFamily: 'Inter, sans-serif', paddingBottom: '60px' }}>
 
-            {/* ── HEADER TOKOPEDIA-STYLE ── */}
-            <div style={{ position: 'relative', background: 'linear-gradient(160deg, #2d8c5e 0%, #1a5c3a 100%)', paddingBottom: '40px' }}>
-                {/* Rounded bottom curve */}
-                <div style={{
-                    position: 'absolute', bottom: '-1px', left: 0, right: 0, height: '40px',
-                    background: '#f5f5f5',
-                    borderRadius: '40px 40px 0 0'
-                }} />
-
-                {/* Top bar: back + logo */}
-                <div style={{ padding: '52px 20px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <button
-                        onClick={() => navigate(-1)}
-                        style={{
-                            background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%',
-                            width: '36px', height: '36px', cursor: 'pointer', color: 'white',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            backdropFilter: 'blur(8px)', flexShrink: 0
-                        }}
-                    >
-                        <ArrowLeft size={18} />
-                    </button>
-                    <div style={{
-                        display: 'inline-flex', alignItems: 'center', gap: '8px',
-                        background: 'rgba(255,255,255,0.15)', borderRadius: '20px', padding: '6px 14px',
-                        backdropFilter: 'blur(8px)'
-                    }}>
-                        <div style={{
-                            width: '24px', height: '24px', borderRadius: '7px',
-                            background: 'white',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center'
-                        }}>
-                            <span style={{ color: '#1a5c3a', fontSize: '11px', fontWeight: '900' }}>P</span>
-                        </div>
-                        <span style={{ fontSize: '15px', fontWeight: '900', color: 'white', letterSpacing: '0.5px' }}>PINTAR-UC</span>
-                    </div>
-                </div>
-
-                {/* Hero content */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-                    style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'flex-start', gap: '16px' }}
-                >
-                    <div style={{ flex: 1 }}>
-                        <h1 style={{ fontSize: '20px', fontWeight: '900', color: 'white', lineHeight: 1.25, margin: 0 }}>
-                            Sistem Unit Cost Terintegrasi Clinical Pathway
-                            <span style={{ display: 'block', color: '#b8f0d4', marginTop: '4px', fontSize: '15px', fontWeight: '700' }}>
-                                Masa Depan Manajemen RS Cerdas
-                            </span>
-                        </h1>
-                        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, margin: '10px 0 0' }}>
-                            Activity Based Costing Modified + double distribution + clinical pathway + IDRG + IDRG
-                        </p>
-                    </div>
-                    <div style={{
-                        width: '120px', flexShrink: 0, height: '130px', borderRadius: '20px',
-                        background: 'rgba(255,255,255,0.15)',
-                        overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        boxShadow: '0 8px 24px rgba(0,0,0,0.2)', padding: '8px',
-                        backdropFilter: 'blur(8px)'
-                    }}>
-                        <IsoDiorama scene="hero" />
-                    </div>
-                </motion.div>
-            </div>
+            <PageHeader
+                gradient="linear-gradient(160deg, #2d8c5e 0%, #1a5c3a 100%)"
+                bgColor="#f5f5f5"
+                label="PINTAR-UC"
+                labelColor="#1a5c3a"
+                badgeLetter="P"
+                title="Sistem Unit Cost Terintegrasi Clinical Pathway"
+                subtitle="Masa Depan Manajemen RS Cerdas"
+                subtitleColor="#b8f0d4"
+                description="Activity Based Costing Modified + double distribution + clinical pathway + IDRG + IDRG"
+                topPadding="52px"
+                illustration={<IsoDiorama scene="hero" />}
+            />
 
             {/* Description */}
             <div style={{ padding: '20px 20px 0' }}>
