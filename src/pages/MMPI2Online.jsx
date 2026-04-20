@@ -61,6 +61,10 @@ const MMPI2Online = () => {
         zIndex: 2,
     };
 
+    // We'll use a deep Teal accent color for the contrast blocks, ensuring the page feels medical but gray dominant
+    const accentColor = '#0f766e';
+    const accentColorLight = '#5eead4';
+
     return (
         <div style={containerStyle}>
             {/* INJECTED MULTI-DEVICE RESPONSIVE STYLE SHEET */}
