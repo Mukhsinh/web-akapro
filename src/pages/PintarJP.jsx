@@ -1,144 +1,264 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import PageHeader from '../components/PageHeader';
-import useDemo from '../hooks/useDemo';
+import { supabase } from '../lib/supabaseClient';
 
 const PintarJP = () => {
-    const handleDemo = useDemo('PINTAR JP');
-    useEffect(() => { window.scrollTo(0, 0); }, []);
+    const [waNumber, setWaNumber] = useState('');
 
-    const features = [
-        { icon: '⚖️', title: 'Distribusi Adil', desc: 'Perhitungan insentif berbasis KPI individu & unit secara proporsional.' },
-        { icon: '📈', title: 'KPI Terintegrasi', desc: 'Kinerja terukur dan linier dengan distribusi jasa pelayanan.' },
-        { icon: '🧾', title: 'Pajak Otomatis', desc: 'Integrasi PPh 21 otomatis, akurat, dan tersistematis.' },
-        { icon: '📱', title: 'Slip Digital', desc: 'Slip jasa pelayanan digital transparan untuk setiap tenaga medis.' },
-    ];
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        fetchWhatsappNumber();
+    }, []);
 
-    const roles = [
-        { role: 'Dokter Spesialis', pct: 85, color: '#0ea5e9' },
-        { role: 'Dokter Umum', pct: 70, color: '#38bdf8' },
-        { role: 'Perawat', pct: 60, color: '#7dd3fc' },
-        { role: 'Tenaga Penunjang', pct: 45, color: '#bae6fd' },
-    ];
+    const fetchWhatsappNumber = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('customer_service')
+                .select('nomor')
+                .eq('status', 'aktif')
+                .limit(1);
+
+            if (error) throw error;
+            if (data && data.length > 0) {
+                let num = data[0].nomor.replace(/\D/g, '');
+                if (num.startsWith('0')) {
+                    num = '62' + num.substring(1);
+                }
+                setWaNumber(num);
+            }
+        } catch (error) {
+            console.error('Error fetching WA number:', error);
+            setWaNumber('6285211516088');
+        }
+    };
+
+    const handleDemo = () => {
+        const text = "Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi PINTAR Jasa Pelayanan.";
+        const targetNumber = waNumber || '6285211516088';
+        window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`, '_blank');
+    };
+
+    const containerStyle = {
+        background: 'linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%)', // Light Blue Gradient
+        minHeight: '100vh',
+        fontFamily: 'Inter, sans-serif',
+        padding: '0 0 80px 0',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        color: '#1e293b',
+        position: 'relative',
+        overflow: 'hidden'
+    };
+
+    const posterInnerWidth = {
+        width: '100%',
+        maxWidth: '900px',
+        padding: '60px 40px',
+        position: 'relative',
+        zIndex: 2,
+    };
 
     return (
-        <div style={{ background: '#f0f9ff', minHeight: '100vh', fontFamily: 'Inter, sans-serif', paddingBottom: '60px' }}>
+        <div style={containerStyle}>
+            {/* Seamless Background Ambient Glows */}
+            <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%)', filter: 'blur(50px)', zIndex: 0 }} />
+            <div style={{ position: 'absolute', top: '40%', right: '-15%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%)', filter: 'blur(60px)', zIndex: 0 }} />
 
-            <PageHeader
-                gradient="linear-gradient(160deg, #0284c7 0%, #0c4a6e 100%)"
-                bgColor="#f0f9ff"
-                label="PINTAR-JP"
-                labelColor="#0284c7"
-                badgeLetter="J"
-                title="Distribusi Insentif Jasa Pelayanan Berbasis KPI"
-                subtitle="Keadilan untuk Setiap Tenaga Medis"
-                subtitleColor="#bae6fd"
-                description="KPI Individu · KPI Unit · Jasa Medis · PPh 21 · Slip Digital"
-                decorators={
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
-                        <svg style={{ position: 'absolute', bottom: 0, right: 0, opacity: 0.1 }} width="200" height="200" viewBox="0 0 200 200">
-                            <circle cx="150" cy="50" r="80" fill="white" />
-                            <circle cx="50" cy="150" r="60" fill="white" />
-                        </svg>
+            {/* Grid Pattern Overlay for Poster Aesthetic */}
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 30 30\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 0H0v30h30V0zM29 1H1v28h28V1z\' fill=\'%230ea5e9\' fill-opacity=\'0.04\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', zIndex: 1, maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)' }} />
+
+            <div style={posterInnerWidth}>
+                {/* Header Logo */}
+                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+                    <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 20px rgba(2, 132, 199, 0.3)' }}>
+                        <motion.img
+                            animate={{ y: [-2, 2, -2] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Money%20Bag.png"
+                            style={{ width: '28px', filter: 'brightness(1.2)' }}
+                        />
                     </div>
-                }
-                illustration={
-                    <svg viewBox="0 0 100 100" width="90" height="90">
-                        <rect x="20" y="55" width="12" height="30" rx="3" fill="rgba(255,255,255,0.4)" />
-                        <rect x="36" y="40" width="12" height="45" rx="3" fill="rgba(255,255,255,0.6)" />
-                        <rect x="52" y="30" width="12" height="55" rx="3" fill="rgba(255,255,255,0.8)" />
-                        <rect x="68" y="20" width="12" height="65" rx="3" fill="white" />
-                        <path d="M26 52 L42 37 L58 27 L74 17" stroke="#bae6fd" strokeWidth="2" strokeLinecap="round" fill="none" />
-                        <circle cx="26" cy="52" r="3" fill="#bae6fd" />
-                        <circle cx="42" cy="37" r="3" fill="#bae6fd" />
-                        <circle cx="58" cy="27" r="3" fill="#bae6fd" />
-                        <circle cx="74" cy="17" r="3" fill="#bae6fd" />
-                    </svg>
-                }
-            />
-
-            <div style={{ padding: '20px 20px 0' }}>
-                <p style={{ fontSize: '13px', color: '#0c4a6e', lineHeight: 1.7, margin: 0 }}>
-                    Aplikasi pengelolaan distribusi insentif jasa pelayanan rumah sakit yang terintegrasi dengan <strong style={{ color: '#0284c7' }}>KPI individu dan KPI Unit</strong> — kinerja terukur dan linier dengan distribusi insentif yang diberikan.
-                </p>
-            </div>
-
-            {/* KPI Distribution Visual */}
-            <div style={{ padding: '20px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'white', borderRadius: '24px', padding: '20px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-                    <h3 style={{ fontSize: '12px', fontWeight: '900', color: '#0c4a6e', letterSpacing: '1px', margin: '0 0 16px', textTransform: 'uppercase' }}>Distribusi Berdasarkan Kinerja</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        {roles.map(({ role, pct, color }) => (
-                            <div key={role}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                                    <span style={{ fontSize: '12px', fontWeight: '700', color: '#1a1a1a' }}>{role}</span>
-                                    <span style={{ fontSize: '12px', fontWeight: '800', color }}>{pct}%</span>
-                                </div>
-                                <div style={{ height: '8px', background: '#f0f9ff', borderRadius: '4px', overflow: 'hidden' }}>
-                                    <motion.div initial={{ width: 0 }} whileInView={{ width: `${pct}%` }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}
-                                        style={{ height: '100%', background: color, borderRadius: '4px' }} />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <h1 style={{ fontSize: '26px', fontWeight: '900', color: '#0369a1', margin: 0, letterSpacing: '0.5px' }}>
+                        PINTAR JP
+                    </h1>
                 </motion.div>
-            </div>
 
-            {/* Features */}
-            <div style={{ padding: '16px 20px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                {features.map((f, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                        style={{ background: 'white', borderRadius: '20px', padding: '16px', boxShadow: '0 4px 16px rgba(0,0,0,0.05)' }}>
-                        <div style={{ fontSize: '24px', marginBottom: '8px' }}>{f.icon}</div>
-                        <div style={{ fontSize: '13px', fontWeight: '800', color: '#0c4a6e', marginBottom: '4px' }}>{f.title}</div>
-                        <div style={{ fontSize: '11px', color: '#0369a1', lineHeight: 1.5 }}>{f.desc}</div>
-                    </motion.div>
-                ))}
-            </div>
+                {/* Main Title Section */}
+                <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }} style={{ fontSize: '42px', fontWeight: '900', lineHeight: 1.2, color: '#0f172a', marginBottom: '16px', maxWidth: '100%' }}>
+                    Distribusi Jasa Pelayanan Terintegrasi: <br />
+                    <span style={{ color: '#0284c7' }}>Menyelaraskan KPI & Keadilan Karyawan</span>
+                </motion.h2>
 
-            {/* Flow Strip */}
-            <div style={{ padding: '16px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'linear-gradient(135deg, #0284c7 0%, #0c4a6e 100%)', borderRadius: '24px', padding: '18px 20px', boxShadow: '0 4px 24px rgba(2,132,199,0.3)' }}>
-                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.55)', fontWeight: '700', letterSpacing: '1.5px', marginBottom: '10px' }}>ALUR PERHITUNGAN INSENTIF</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                        {['Input KPI', 'Verifikasi', 'Kalkulasi', 'Pajak PPh', 'Distribusi'].map((step, i) => (
-                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: '8px', padding: '5px 10px', fontSize: '11px', fontWeight: '700', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>{step}</div>
-                                {i < 4 && <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px' }}>›</span>}
-                            </div>
-                        ))}
-                    </div>
-                </motion.div>
-            </div>
+                {/* SEAMLESS CSS 3D ISOMETRIC DIORAMA (LIGHT BLUE) */}
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                    style={{ position: 'relative', width: '100%', height: '450px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px', marginBottom: '60px', perspective: '1200px' }}>
 
-            {/* Manfaat */}
-            <div style={{ padding: '16px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'white', borderRadius: '24px', padding: '20px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-                    <h3 style={{ fontSize: '12px', fontWeight: '900', color: '#0c4a6e', letterSpacing: '1px', margin: '0 0 12px', textTransform: 'uppercase' }}>Manfaat Utama</h3>
-                    {['Distribusi insentif transparan & berkeadilan', 'Eliminasi konflik internal tenaga medis', 'Perhitungan pajak otomatis & akurat', 'Retensi SDM terbaik rumah sakit'].map((item, idx) => (
-                        <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '8px' }}>
-                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0284c7', flexShrink: 0, marginTop: '5px' }} />
-                            <span style={{ fontSize: '13px', color: '#0c4a6e', lineHeight: 1.5 }}>{item}</span>
+                    {/* The Isometric Stepped Podium Diorama */}
+                    <div style={{
+                        position: 'relative',
+                        width: '380px',
+                        height: '380px',
+                        transform: 'rotateX(60deg) rotateZ(-45deg)',
+                        transformStyle: 'preserve-3d'
+                    }}>
+                        {/* Tier 1: Base Layer */}
+                        <div style={{ position: 'absolute', inset: '0', background: '#e0f2fe', borderRadius: '40px', boxShadow: '15px 15px 0 rgba(2, 132, 199, 0.15)', border: '4px solid white', transform: 'translateZ(0px)', transformStyle: 'preserve-3d' }} />
+
+                        {/* Tier 2: Middle Step */}
+                        <div style={{ position: 'absolute', inset: '15%', background: 'linear-gradient(135deg, #bae6fd 0%, #7dd3fc 100%)', borderRadius: '30px', boxShadow: '10px 10px 0 #38bdf8', border: '3px solid white', transform: 'translateZ(30px)', transformStyle: 'preserve-3d' }} />
+
+                        {/* Tier 3: Top Step */}
+                        <div style={{ position: 'absolute', inset: '35%', background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)', borderRadius: '20px', boxShadow: '8px 8px 0 #075985', border: '2px solid #7dd3fc', transform: 'translateZ(60px)', transformStyle: 'preserve-3d' }} />
+
+                        {/* Floating Links/Paths between tiers */}
+                        <motion.div animate={{ opacity: [0.3, 0.8, 0.3] }} transition={{ duration: 2, repeat: Infinity }} style={{ position: 'absolute', top: '50%', left: '20%', width: '30%', height: '4px', background: '#0ea5e9', transform: 'translateZ(45px) rotate(45deg)' }} />
+
+                        {/* Emojis Placed on Tiers (Elevated correctly to prevent clipping) */}
+                        {/* Main Top Center Item */}
+                        <div style={{ position: 'absolute', top: '15%', left: '15%', width: '160px', transform: 'translateZ(140px) rotateZ(45deg) rotateX(-60deg)' }}>
+                            <motion.img
+                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Laptop.png"
+                                style={{ width: '100%', filter: 'drop-shadow(-20px 30px 15px rgba(2,132,199,0.3))' }}
+                            />
                         </div>
-                    ))}
-                </motion.div>
-            </div>
 
-            {/* CTA */}
-            <div style={{ padding: '32px 20px 0' }}>
-                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} onClick={handleDemo}
-                    style={{ width: '100%', padding: '13px 20px', borderRadius: '16px', background: 'linear-gradient(135deg, #38bdf8 0%, #0284c7 100%)', color: 'white', fontWeight: '800', fontSize: '14px', border: 'none', cursor: 'pointer', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 8px 28px rgba(2,132,199,0.4)', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)', borderRadius: '18px 18px 0 0', pointerEvents: 'none' }} />
-                    <span style={{ fontSize: '18px' }}>💼</span>
-                    <span>Ajukan Demo Sekarang</span>
-                    <span style={{ fontSize: '16px', marginLeft: '2px' }}>→</span>
-                </motion.button>
-                <p style={{ textAlign: 'center', fontSize: '11px', color: '#0369a1', marginTop: '10px' }}>
-                    Tim kami akan menghubungi Anda untuk aktivasi akun demo eksklusif.
-                </p>
+                        {/* Tier 2 Bottom Left */}
+                        <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: '90px', transform: 'translateZ(90px) rotateZ(45deg) rotateX(-60deg)' }}>
+                            <motion.img
+                                animate={{ y: [-15, 15, -15] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Chart%20Increasing.png"
+                                style={{ width: '100%', filter: 'drop-shadow(-15px 25px 10px rgba(2,132,199,0.4))' }}
+                            />
+                        </div>
+
+                        {/* Tier 2 Top Right */}
+                        <div style={{ position: 'absolute', top: '5%', right: '-5%', width: '110px', transform: 'translateZ(90px) rotateZ(45deg) rotateX(-60deg)' }}>
+                            <motion.img
+                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Office%20Worker.png"
+                                style={{ width: '100%', filter: 'drop-shadow(-15px 20px 10px rgba(2,132,199,0.3))' }}
+                            />
+                        </div>
+
+                        {/* Floating around Base */}
+                        <div style={{ position: 'absolute', bottom: '25%', right: '5%', width: '80px', transform: 'translateZ(60px) rotateZ(45deg) rotateX(-60deg)' }}>
+                            <motion.img
+                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Money%20with%20Wings.png"
+                                style={{ width: '100%', filter: 'drop-shadow(-10px 15px 10px rgba(2,132,199,0.3))' }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Left/Right Floating Accent Cards inside Diorama */}
+                    <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 6, repeat: Infinity }} style={{ position: 'absolute', left: '-20px', top: '20%', background: 'white', padding: '12px 20px', borderRadius: '16px', boxShadow: '0 15px 30px rgba(2,132,199,0.15)', zIndex: 10, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '10px', height: '10px', background: '#38bdf8', borderRadius: '50%' }} />
+                        <span style={{ fontWeight: '800', color: '#1e293b', fontSize: '14px' }}>Integrasi KPI</span>
+                    </motion.div>
+
+                    <motion.div animate={{ y: [10, -10, 10] }} transition={{ duration: 5, repeat: Infinity }} style={{ position: 'absolute', right: '-20px', bottom: '20%', background: 'white', padding: '12px 20px', borderRadius: '16px', boxShadow: '0 15px 30px rgba(2,132,199,0.15)', zIndex: 10, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '10px', height: '10px', background: '#0284c7', borderRadius: '50%' }} />
+                        <span style={{ fontWeight: '800', color: '#1e293b', fontSize: '14px' }}>Hitung Otomatis</span>
+                    </motion.div>
+                </motion.div>
+
+                {/* Middle Info Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '32px', marginBottom: '50px' }}>
+                    {/* Latar Belakang */}
+                    <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} style={{ background: 'white', borderRadius: '32px', padding: '40px', boxShadow: '0 20px 50px rgba(2,132,199,0.08)', position: 'relative' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                            <motion.img
+                                animate={{ rotate: [-10, 10, -10] }}
+                                transition={{ duration: 3, repeat: Infinity }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Handshake.png"
+                                style={{ width: '36px' }}
+                            />
+                            <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#0f172a', margin: 0 }}>LATAR BELAKANG</h3>
+                        </div>
+                        <p style={{ color: '#475569', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
+                            Tantangan dalam distribusi insentif yang adil dan memotivasi. Aplikasi kami mengintegrasikan KPI operasional dengan kompensasi untuk mencapai target RS secara berkelanjutan.
+                        </p>
+                    </motion.div>
+
+                    {/* Manfaat Integrasi */}
+                    <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} style={{ background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)', borderRadius: '32px', padding: '40px', color: 'white', boxShadow: '0 20px 50px rgba(2, 132, 199, 0.25)' }}>
+                        <h3 style={{ fontSize: '18px', fontWeight: '800', margin: '0 0 24px 0' }}>MANFAAT INTEGRASI</h3>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            {[
+                                'Keadilan dan Transparansi Insentif Berbasis Kinerja.',
+                                'Meningkatkan Kepatuhan Medis.',
+                                'Peningkatan Produktivitas & Motivasi.',
+                                'Analisis Performa yang Lebih Presisi.'
+                            ].map((item, idx) => (
+                                <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', fontSize: '15px', fontWeight: '500' }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#bae6fd', marginTop: '6px', boxShadow: '0 0 10px #7dd3fc' }}></div>
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    </motion.div>
+                </div>
+
+                {/* Target Pengguna Section */}
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ background: 'white', borderRadius: '32px', padding: '40px', boxShadow: '0 20px 50px rgba(2,132,199,0.08)', marginBottom: '50px' }}>
+                    <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#0f172a', textAlign: 'center', marginBottom: '32px' }}>TARGET PENGGUNA</h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+                        {[
+                            { title: 'Risk/KPI Officer', desc: 'Pemantau performa rutin.', img: 'Man%20Office%20Worker' },
+                            { title: 'Strategic Planner', desc: 'Penentu arah kebijakan.', img: 'Man%20Technologist' },
+                            { title: 'Hospital Admin', desc: 'Pengelola distribusi dana.', img: 'Woman%20Office%20Worker' }
+                        ].map((user, idx) => (
+                            <div key={idx} style={{ background: '#f0f9ff', borderRadius: '24px', padding: '32px 20px', textAlign: 'center', border: '2px solid transparent', transition: 'all 0.3s ease', cursor: 'default' }}
+                                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-8px)'; e.currentTarget.style.borderColor = '#bae6fd'; e.currentTarget.style.boxShadow = '0 15px 30px rgba(2,132,199,0.15)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
+                            >
+                                <motion.img
+                                    animate={{ y: [-5, 5, -5] }}
+                                    transition={{ duration: 4, repeat: Infinity, delay: idx * 0.3 }}
+                                    src={`https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/${user.img}.png`}
+                                    alt={user.title}
+                                    style={{ width: '90px', margin: '0 auto 24px', filter: 'drop-shadow(0 15px 15px rgba(2, 132, 199, 0.2))' }}
+                                />
+                                <h4 style={{ fontSize: '16px', fontWeight: '800', color: '#0284c7', margin: '0 0 8px 0' }}>{user.title}</h4>
+                                <p style={{ fontSize: '13px', color: '#475569', margin: 0, fontWeight: '500' }}>{user.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </motion.div>
+
+                {/* CTA Button (ORANGE / ACCENT) */}
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <motion.button
+                        whileHover={{ scale: 1.03, boxShadow: '0 25px 45px rgba(234, 88, 12, 0.5)' }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleDemo}
+                        style={{
+                            width: '100%',
+                            maxWidth: '600px',
+                            padding: '24px',
+                            borderRadius: '30px',
+                            background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)', // Orange accent!
+                            color: 'white',
+                            fontSize: '22px',
+                            fontWeight: '900',
+                            border: '6px solid white',
+                            outline: '2px solid #ea580c',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '16px',
+                            boxShadow: '0 20px 40px rgba(234, 88, 12, 0.4)',
+                            transition: 'all 0.3s ease'
+                        }}
+                    >
+                        [ AJUKAN DEMO SEKARANG ]
+                        <motion.span animate={{ x: [0, 10, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>→</motion.span>
+                    </motion.button>
+                </motion.div>
+
             </div>
         </div>
     );

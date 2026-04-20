@@ -1,171 +1,278 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { supabase } from '../lib/supabaseClient';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const MMPI2Online = () => {
     const navigate = useNavigate();
-    useEffect(() => { window.scrollTo(0, 0); }, []);
+    const [waNumber, setWaNumber] = useState('');
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        fetchWhatsappNumber();
+    }, []);
+
+    const fetchWhatsappNumber = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('customer_service')
+                .select('nomor')
+                .eq('status', 'aktif')
+                .limit(1);
+
+            if (error) throw error;
+            if (data && data.length > 0) {
+                let num = data[0].nomor.replace(/\D/g, '');
+                if (num.startsWith('0')) {
+                    num = '62' + num.substring(1);
+                }
+                setWaNumber(num);
+            }
+        } catch (error) {
+            console.error('Error fetching WA number:', error);
+            setWaNumber('6285211516088');
+        }
+    };
 
     const handleDemo = () => {
         const text = "Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi MMPI-2 Online.";
-        window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, '_blank');
+        const targetNumber = waNumber || '6285211516088';
+        window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`, '_blank');
     };
 
-    const scales = [
-        { code: 'L', name: 'Lie Scale', color: '#a855f7' },
-        { code: 'F', name: 'Infrequency', color: '#8b5cf6' },
-        { code: 'K', name: 'Correction', color: '#7c3aed' },
-        { code: 'Hs', name: 'Hypochondriasis', color: '#6d28d9' },
-        { code: 'D', name: 'Depression', color: '#5b21b6' },
-        { code: 'Hy', name: 'Hysteria', color: '#4c1d95' },
-    ];
+    const containerStyle = {
+        background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)', // Light Gray Dominant Gradient
+        minHeight: '100vh',
+        fontFamily: 'Inter, sans-serif',
+        padding: '0 0 80px 0',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        color: '#0f172a',
+        position: 'relative',
+        overflow: 'hidden'
+    };
 
-    const features = [
-        { icon: '🧠', title: 'Standar Emas', desc: '567 item MMPI-2 tervalidasi secara klinis & psikometrik.' },
-        { icon: '⚡', title: 'Hasil Real-time', desc: 'Laporan psikologis tersedia langsung setelah pengisian.' },
-        { icon: '🔐', title: 'Anti-Curang', desc: 'Sistem deteksi inkonsistensi jawaban otomatis.' },
-        { icon: '☁️', title: 'Akses Online', desc: 'Dapat diakses dari mana saja, kapan saja, perangkat apa saja.' },
-    ];
+    const posterInnerWidth = {
+        width: '100%',
+        maxWidth: '900px',
+        padding: '60px 40px',
+        position: 'relative',
+        zIndex: 2,
+    };
+
+    // We'll use a deep Teal accent color for the contrast blocks, ensuring the page feels medical but gray dominant
+    const accentColor = '#0f766e';
+    const accentColorLight = '#5eead4';
 
     return (
-        <div style={{ background: '#faf5ff', minHeight: '100vh', fontFamily: 'Inter, sans-serif', paddingBottom: '60px' }}>
+        <div style={containerStyle}>
+            {/* Nav Back Button */}
+            <div style={{ position: 'absolute', top: '24px', left: '24px', zIndex: 10 }}>
+                <button onClick={() => navigate(-1)} style={{ background: 'white', border: '1px solid #cbd5e1', borderRadius: '50%', width: '40px', height: '40px', cursor: 'pointer', color: '#475569', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+                    <ArrowLeft size={20} />
+                </button>
+            </div>
 
-            {/* HEADER */}
-            <div style={{ position: 'relative', background: 'linear-gradient(160deg, #7c3aed 0%, #4c1d95 100%)', paddingBottom: '40px' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
-                    {[...Array(4)].map((_, i) => (
-                        <motion.div key={i}
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 20 + i * 5, repeat: Infinity, ease: 'linear' }}
-                            style={{ position: 'absolute', top: `${5 + i * 10}%`, right: `${-5 + i * 8}%`, width: `${80 + i * 20}px`, height: `${80 + i * 20}px`, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.06)' }} />
-                    ))}
-                </div>
-                <div style={{ position: 'absolute', bottom: '-1px', left: 0, right: 0, height: '40px', background: '#faf5ff', borderRadius: '40px 40px 0 0' }} />
+            {/* Seamless Background Ambient Glows */}
+            <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(148, 163, 184, 0.2) 0%, transparent 70%)', filter: 'blur(50px)', zIndex: 0 }} />
+            <div style={{ position: 'absolute', top: '40%', right: '-15%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(15, 118, 110, 0.08) 0%, transparent 70%)', filter: 'blur(60px)', zIndex: 0 }} />
 
-                <div style={{ padding: '16px 20px 0', display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
-                    <button onClick={() => navigate(-1)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)', flexShrink: 0 }}>
-                        <ArrowLeft size={18} />
-                    </button>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.15)', borderRadius: '20px', padding: '6px 14px', backdropFilter: 'blur(8px)' }}>
-                        <div style={{ width: '24px', height: '24px', borderRadius: '7px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <span style={{ color: '#7c3aed', fontSize: '9px', fontWeight: '900' }}>M2</span>
-                        </div>
-                        <span style={{ fontSize: '15px', fontWeight: '900', color: 'white', letterSpacing: '0.5px' }}>MMPI-2 Online</span>
-                    </div>
-                </div>
+            {/* Grid Pattern Overlay for Poster Aesthetic */}
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 30 30\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 0H0v30h30V0zM29 1H1v28h28V1z\' fill=\'%2364748b\' fill-opacity=\'0.04\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', zIndex: 1, maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)' }} />
 
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-                    style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'flex-start', gap: '16px', position: 'relative' }}>
-                    <div style={{ flex: 1 }}>
-                        <h1 style={{ fontSize: '20px', fontWeight: '900', color: 'white', lineHeight: 1.25, margin: 0 }}>
-                            Uji Psikologi MMPI-2 Digital Standar Emas
-                            <span style={{ display: 'block', color: '#e9d5ff', marginTop: '4px', fontSize: '15px', fontWeight: '700' }}>
-                                Assessment SDM Akurat & Efisien
-                            </span>
-                        </h1>
-                        <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, margin: '10px 0 0' }}>
-                            567 Item · Analisis Real-time · Anti-Curang · Laporan Klinis Lengkap
-                        </p>
+            <div style={posterInnerWidth}>
+                {/* Header Logo */}
+                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+                    <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #475569 0%, #334155 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 20px rgba(71, 85, 105, 0.2)' }}>
+                        <motion.img
+                            animate={{ y: [-2, 2, -2] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Brain.png"
+                            style={{ width: '28px' }}
+                        />
                     </div>
-                    <div style={{ width: '110px', flexShrink: 0, height: '120px', borderRadius: '20px', background: 'rgba(255,255,255,0.12)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.2)', backdropFilter: 'blur(8px)' }}>
-                        <svg viewBox="0 0 100 100" width="90" height="90">
-                            <circle cx="50" cy="45" r="28" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
-                            <path d="M30 45 Q35 30 50 28 Q65 30 70 45 Q65 60 50 62 Q35 60 30 45Z" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
-                            <path d="M38 45 Q42 38 50 37 Q58 38 62 45 Q58 52 50 53 Q42 52 38 45Z" fill="rgba(255,255,255,0.2)" />
-                            <circle cx="50" cy="45" r="6" fill="white" opacity="0.9" />
-                            <circle cx="50" cy="45" r="3" fill="#7c3aed" />
-                            <line x1="50" y1="17" x2="50" y2="12" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-                            <line x1="73" y1="45" x2="78" y2="45" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-                            <line x1="27" y1="45" x2="22" y2="45" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-                            <line x1="66" y1="29" x2="70" y2="25" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-                            <line x1="34" y1="29" x2="30" y2="25" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" strokeLinecap="round" />
-                        </svg>
-                    </div>
+                    <h1 style={{ fontSize: '26px', fontWeight: '900', color: '#334155', margin: 0, letterSpacing: '0.5px' }}>
+                        MMPI-2 Online
+                    </h1>
                 </motion.div>
-            </div>
 
-            <div style={{ padding: '20px 20px 0' }}>
-                <p style={{ fontSize: '13px', color: '#4c1d95', lineHeight: 1.7, margin: 0 }}>
-                    Aplikasi pengujian <strong style={{ color: '#7c3aed' }}>MMPI-2 Online</strong> terintegrasi dengan analisis data sesuai standarisasi — hasil dapat langsung terlihat secara real-time, dilakukan secara online, sehingga praktis, mudah, dan akurat.
-                </p>
-            </div>
+                {/* Main Title Section */}
+                <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }} style={{ fontSize: '42px', fontWeight: '900', lineHeight: 1.2, color: '#0f172a', marginBottom: '16px', maxWidth: '100%' }}>
+                    Sistem MMPI-2 Online Terintegrasi: <br />
+                    <span style={{ color: accentColor }}>Evaluasi Kepribadian Akurat & Pelaporan Real-time</span>
+                </motion.h2>
 
-            {/* Scale Preview */}
-            <div style={{ padding: '20px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'white', borderRadius: '24px', padding: '20px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-                    <h3 style={{ fontSize: '12px', fontWeight: '900', color: '#4c1d95', letterSpacing: '1px', margin: '0 0 14px', textTransform: 'uppercase' }}>Skala Klinis MMPI-2</h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {scales.map(({ code, name, color }) => (
-                            <div key={code} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: `${color}12`, border: `1px solid ${color}30`, borderRadius: '10px', padding: '6px 10px' }}>
-                                <div style={{ width: '20px', height: '20px', borderRadius: '6px', background: color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <span style={{ fontSize: '9px', fontWeight: '900', color: 'white' }}>{code}</span>
-                                </div>
-                                <span style={{ fontSize: '11px', fontWeight: '600', color }}>{name}</span>
-                            </div>
-                        ))}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(0,0,0,0.04)', borderRadius: '10px', padding: '6px 10px' }}>
-                            <span style={{ fontSize: '11px', color: '#888' }}>+4 skala lainnya</span>
+                {/* SEAMLESS CSS 3D ISOMETRIC DIORAMA (LIGHT GRAY / TEAL ACCENT) */}
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                    style={{ position: 'relative', width: '100%', height: '450px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px', marginBottom: '60px', perspective: '1200px' }}>
+
+                    {/* The Isometric Stepped Podium Diorama */}
+                    <div style={{
+                        position: 'relative',
+                        width: '380px',
+                        height: '380px',
+                        transform: 'rotateX(60deg) rotateZ(-45deg)',
+                        transformStyle: 'preserve-3d'
+                    }}>
+                        {/* Tier 1: Base Layer */}
+                        <div style={{ position: 'absolute', inset: '0', background: '#f8fafc', borderRadius: '40px', boxShadow: '15px 15px 0 rgba(71, 85, 105, 0.15)', border: '4px solid white', transform: 'translateZ(0px)', transformStyle: 'preserve-3d' }} />
+
+                        {/* Tier 2: Middle Step */}
+                        <div style={{ position: 'absolute', inset: '15%', background: 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)', borderRadius: '30px', boxShadow: '10px 10px 0 #94a3b8', border: '3px solid white', transform: 'translateZ(30px)', transformStyle: 'preserve-3d' }} />
+
+                        {/* Tier 3: Top Step */}
+                        <div style={{ position: 'absolute', inset: '35%', background: 'linear-gradient(135deg, #0f766e 0%, #115e59 100%)', borderRadius: '20px', boxShadow: '8px 8px 0 #042f2e', border: '2px solid #5eead4', transform: 'translateZ(60px)', transformStyle: 'preserve-3d' }} />
+
+                        {/* Floating Links/Paths between tiers */}
+                        <motion.div animate={{ opacity: [0.3, 0.8, 0.3] }} transition={{ duration: 2, repeat: Infinity }} style={{ position: 'absolute', top: '50%', left: '20%', width: '30%', height: '4px', background: '#94a3b8', transform: 'translateZ(45px) rotate(45deg)' }} />
+
+                        {/* Emojis Placed on Tiers (Elevated correctly to prevent clipping) */}
+                        {/* Main Top Center Item */}
+                        <div style={{ position: 'absolute', top: '10%', left: '15%', width: '160px', transform: 'translateZ(140px) rotateZ(45deg) rotateX(-60deg)' }}>
+                            <motion.img
+                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Desktop%20Computer.png"
+                                style={{ width: '100%', filter: 'drop-shadow(-20px 30px 15px rgba(71,85,105,0.3))' }}
+                            />
+                        </div>
+
+                        {/* Tier 2 Bottom Left */}
+                        <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: '90px', transform: 'translateZ(90px) rotateZ(45deg) rotateX(-60deg)' }}>
+                            <motion.img
+                                animate={{ y: [-15, 15, -15] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Light%20Bulb.png"
+                                style={{ width: '100%', filter: 'drop-shadow(-15px 25px 10px rgba(71,85,105,0.3))' }}
+                            />
+                        </div>
+
+                        {/* Tier 2 Top Right */}
+                        <div style={{ position: 'absolute', top: '5%', right: '-5%', width: '110px', transform: 'translateZ(90px) rotateZ(45deg) rotateX(-60deg)' }}>
+                            <motion.img
+                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Woman%20Health%20Worker.png"
+                                style={{ width: '100%', filter: 'drop-shadow(-15px 20px 10px rgba(71,85,105,0.3))' }}
+                            />
+                        </div>
+
+                        {/* Floating around Base */}
+                        <div style={{ position: 'absolute', bottom: '25%', right: '5%', width: '90px', transform: 'translateZ(60px) rotateZ(45deg) rotateX(-60deg)' }}>
+                            <motion.img
+                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Clipboard.png"
+                                style={{ width: '100%', filter: 'drop-shadow(-10px 15px 10px rgba(71,85,105,0.25))' }}
+                            />
                         </div>
                     </div>
-                </motion.div>
-            </div>
 
-            {/* Features */}
-            <div style={{ padding: '16px 20px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                {features.map((f, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                        style={{ background: 'white', borderRadius: '20px', padding: '16px', boxShadow: '0 4px 16px rgba(0,0,0,0.05)' }}>
-                        <div style={{ fontSize: '24px', marginBottom: '8px' }}>{f.icon}</div>
-                        <div style={{ fontSize: '13px', fontWeight: '800', color: '#4c1d95', marginBottom: '4px' }}>{f.title}</div>
-                        <div style={{ fontSize: '11px', color: '#6d28d9', lineHeight: 1.5 }}>{f.desc}</div>
+                    {/* Left/Right Floating Accent Cards inside Diorama */}
+                    <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 6, repeat: Infinity }} style={{ position: 'absolute', left: '-20px', top: '20%', background: 'white', padding: '12px 20px', borderRadius: '16px', boxShadow: '0 15px 30px rgba(71,85,105,0.1)', zIndex: 10, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '10px', height: '10px', background: '#94a3b8', borderRadius: '50%' }} />
+                        <span style={{ fontWeight: '800', color: '#334155', fontSize: '14px' }}>MMPI-2 Profile</span>
                     </motion.div>
-                ))}
-            </div>
 
-            {/* Process Strip */}
-            <div style={{ padding: '16px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%)', borderRadius: '24px', padding: '18px 20px', boxShadow: '0 4px 24px rgba(124,58,237,0.35)' }}>
-                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.55)', fontWeight: '700', letterSpacing: '1.5px', marginBottom: '10px' }}>ALUR PENGUJIAN MMPI-2</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                        {['Registrasi', 'Pengisian', 'Skoring', 'Analisis', 'Laporan'].map((step, i) => (
-                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: '8px', padding: '5px 10px', fontSize: '11px', fontWeight: '700', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>{step}</div>
-                                {i < 4 && <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px' }}>›</span>}
+                    <motion.div animate={{ y: [10, -10, 10] }} transition={{ duration: 5, repeat: Infinity }} style={{ position: 'absolute', right: '-20px', bottom: '20%', background: 'white', padding: '12px 20px', borderRadius: '16px', boxShadow: '0 15px 30px rgba(71,85,105,0.1)', zIndex: 10, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '10px', height: '10px', background: accentColor, borderRadius: '50%' }} />
+                        <span style={{ fontWeight: '800', color: '#334155', fontSize: '14px' }}>Real-time Report</span>
+                    </motion.div>
+                </motion.div>
+
+                {/* Middle Info Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '32px', marginBottom: '50px' }}>
+                    {/* Latar Belakang */}
+                    <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} style={{ background: 'white', borderRadius: '32px', padding: '40px', boxShadow: '0 20px 50px rgba(71,85,105,0.05)', position: 'relative' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                            <motion.img
+                                animate={{ rotate: [-10, 10, -10] }}
+                                transition={{ duration: 3, repeat: Infinity }}
+                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Handshake.png"
+                                style={{ width: '36px' }}
+                            />
+                            <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#0f172a', margin: 0 }}>LATAR BELAKANG</h3>
+                        </div>
+                        <p style={{ color: '#475569', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>
+                            Tantangan data penilaian yang terfragmentasi. Aplikasi kami mengintegrasikan evaluasi MMPI-2 dengan laporan komprehensif untuk mencapai diagnostik yang berkelanjutan.
+                        </p>
+                    </motion.div>
+
+                    {/* Manfaat Integrasi */}
+                    <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} style={{ background: `linear-gradient(135deg, ${accentColor} 0%, #115e59 100%)`, borderRadius: '32px', padding: '40px', color: 'white', boxShadow: '0 20px 50px rgba(15,118,110,0.2)' }}>
+                        <h3 style={{ fontSize: '18px', fontWeight: '800', margin: '0 0 24px 0' }}>MANFAAT INTEGRASI</h3>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            {[
+                                'Evaluasi Kepribadian Online Terstandardisasi.',
+                                'Penyelarasan Diagnosis dengan Protokol Klinis.',
+                                'Peningkatan Kepatuhan Standar Medis.',
+                                'Analisis Performa yang Lebih Presisi.'
+                            ].map((item, idx) => (
+                                <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', fontSize: '15px', fontWeight: '500' }}>
+                                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: accentColorLight, marginTop: '6px', boxShadow: `0 0 10px ${accentColorLight}` }}></div>
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    </motion.div>
+                </div>
+
+                {/* Target Pengguna Section */}
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ background: 'white', borderRadius: '32px', padding: '40px', boxShadow: '0 20px 50px rgba(71,85,105,0.05)', marginBottom: '50px' }}>
+                    <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#0f172a', textAlign: 'center', marginBottom: '32px' }}>TARGET PENGGUNA</h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+                        {[
+                            { title: 'Risk/KPI Officer', desc: 'Pemantau kepatuhan.', img: 'Man%20Office%20Worker' },
+                            { title: 'Manajer Program', desc: 'Pengelola program klinis.', img: 'Woman%20Office%20Worker' },
+                            { title: 'Hospital Admin', desc: 'Pemantau performa rutin.', img: 'Man%20Health%20Worker' }
+                        ].map((user, idx) => (
+                            <div key={idx} style={{ background: '#f8fafc', borderRadius: '24px', padding: '32px 20px', textAlign: 'center', border: '2px solid transparent', transition: 'all 0.3s ease', cursor: 'default' }}
+                                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-8px)'; e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.boxShadow = '0 15px 30px rgba(71,85,105,0.1)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
+                            >
+                                <motion.img
+                                    animate={{ y: [-5, 5, -5] }}
+                                    transition={{ duration: 4, repeat: Infinity, delay: idx * 0.3 }}
+                                    src={`https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/${user.img}.png`}
+                                    alt={user.title}
+                                    style={{ width: '90px', margin: '0 auto 24px', filter: 'drop-shadow(0 15px 15px rgba(71,85,105,0.15))' }}
+                                />
+                                <h4 style={{ fontSize: '16px', fontWeight: '800', color: accentColor, margin: '0 0 8px 0' }}>{user.title}</h4>
+                                <p style={{ fontSize: '13px', color: '#475569', margin: 0, fontWeight: '500' }}>{user.desc}</p>
                             </div>
                         ))}
                     </div>
                 </motion.div>
-            </div>
 
-            {/* Use Cases */}
-            <div style={{ padding: '16px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'white', borderRadius: '24px', padding: '20px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-                    <h3 style={{ fontSize: '12px', fontWeight: '900', color: '#4c1d95', letterSpacing: '1px', margin: '0 0 12px', textTransform: 'uppercase' }}>Kasus Penggunaan</h3>
-                    {['Seleksi & rekrutmen tenaga medis', 'Evaluasi psikologis berkala SDM', 'Asesmen jabatan struktural RS', 'Deteksi dini gangguan psikologis'].map((item, idx) => (
-                        <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '8px' }}>
-                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#7c3aed', flexShrink: 0, marginTop: '5px' }} />
-                            <span style={{ fontSize: '13px', color: '#4c1d95', lineHeight: 1.5 }}>{item}</span>
-                        </div>
-                    ))}
+                {/* CTA Button (ORANGE / ACCENT) */}
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <motion.button
+                        whileHover={{ scale: 1.03, boxShadow: '0 25px 45px rgba(234, 88, 12, 0.4)' }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleDemo}
+                        style={{
+                            width: '100%',
+                            maxWidth: '600px',
+                            padding: '24px',
+                            borderRadius: '30px',
+                            background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)', // Orange accent!
+                            color: 'white',
+                            fontSize: '22px',
+                            fontWeight: '900',
+                            border: '6px solid white',
+                            outline: '2px solid #ea580c',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '16px',
+                            boxShadow: '0 20px 40px rgba(234, 88, 12, 0.3)',
+                            transition: 'all 0.3s ease'
+                        }}
+                    >
+                        [ AJUKAN DEMO SEKARANG ]
+                        <motion.span animate={{ x: [0, 10, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>→</motion.span>
+                    </motion.button>
                 </motion.div>
-            </div>
 
-            {/* CTA */}
-            <div style={{ padding: '32px 20px 0' }}>
-                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} onClick={handleDemo}
-                    style={{ width: '100%', padding: '13px 20px', borderRadius: '16px', background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)', color: 'white', fontWeight: '800', fontSize: '14px', border: 'none', cursor: 'pointer', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 8px 28px rgba(124,58,237,0.4)', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)', borderRadius: '18px 18px 0 0', pointerEvents: 'none' }} />
-                    <span style={{ fontSize: '18px' }}>💡</span>
-                    <span>Ajukan Demo Sekarang</span>
-                    <span style={{ fontSize: '16px', marginLeft: '2px' }}>→</span>
-                </motion.button>
-                <p style={{ textAlign: 'center', fontSize: '11px', color: '#7c3aed', marginTop: '10px' }}>
-                    Tim kami akan menghubungi Anda untuk aktivasi akun demo eksklusif.
-                </p>
             </div>
         </div>
     );

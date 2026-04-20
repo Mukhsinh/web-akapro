@@ -1,139 +1,238 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import PageHeader from '../components/PageHeader';
-import useDemo from '../hooks/useDemo';
+import { supabase } from '../lib/supabaseClient';
 
 const PintarMR = () => {
-    const handleDemo = useDemo('PINTAR MR');
-    useEffect(() => { window.scrollTo(0, 0); }, []);
+    const [waNumber, setWaNumber] = useState('');
 
-    const features = [
-        { icon: '🛡️', title: 'ISO 31000', desc: 'Kerangka manajemen risiko internasional yang terstandarisasi.' },
-        { icon: '📊', title: 'Balance Scorecard', desc: 'Monitoring KPI dan risiko berjalan simultan dalam satu dashboard.' },
-        { icon: '🗺️', title: 'Risk Mapping', desc: 'Peta risiko visual interaktif dengan heat map prioritas.' },
-        { icon: '🔔', title: 'Early Warning', desc: 'Notifikasi otomatis saat indikator risiko melampaui ambang batas.' },
-    ];
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        fetchWhatsappNumber();
+    }, []);
 
-    const risks = [
-        { level: 'Kritis', color: '#FF3B5C', items: ['Keselamatan Pasien', 'Kepatuhan Regulasi'] },
-        { level: 'Tinggi', color: '#FF8C00', items: ['Operasional SDM', 'Keuangan RS'] },
-        { level: 'Sedang', color: '#FFB800', items: ['Reputasi Institusi', 'Teknologi Informasi'] },
-    ];
+    const fetchWhatsappNumber = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('customer_service')
+                .select('nomor')
+                .eq('status', 'aktif')
+                .limit(1);
+
+            if (error) throw error;
+            if (data && data.length > 0) {
+                let num = data[0].nomor.replace(/\D/g, '');
+                if (num.startsWith('0')) {
+                    num = '62' + num.substring(1);
+                }
+                setWaNumber(num);
+            }
+        } catch (error) {
+            console.error('Error fetching WA number:', error);
+            setWaNumber('6285211516088');
+        }
+    };
+
+    const handleDemo = () => {
+        const text = "Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi Manajemen Resiko Terintegrasi.";
+        const targetNumber = waNumber || '6285211516088';
+        window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`, '_blank');
+    };
+
+    // Staggered animation wrapper
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
+    };
+
+    // Light Blue theme palette
+    const colors = {
+        bg: '#eff6ff',        // blue-50
+        cardBg: '#ffffff',
+        textDark: '#1e3a8a',  // blue-900
+        textMuted: '#475569', // slate-600
+        accentBlue: '#2563eb',// blue-600
+        accentLight: '#bfdbfe',// blue-200
+        orangeGrad: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
+    };
 
     return (
-        <div style={{ background: '#f0f2f8', minHeight: '100vh', fontFamily: 'Inter, sans-serif', paddingBottom: '60px' }}>
+        <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: 'Inter, sans-serif', paddingBottom: '60px', overflowX: 'hidden', position: 'relative' }}>
 
-            <PageHeader
-                gradient="linear-gradient(160deg, #6c3fc5 0%, #3a1a8a 100%)"
-                bgColor="#f0f2f8"
-                label="PINTAR-MR"
-                labelColor="#6c3fc5"
-                badgeLetter="M"
-                title="Manajemen Risiko Terintegrasi Berbasis ISO 31000"
-                subtitle="Lindungi Institusi dari Risiko Tersembunyi"
-                subtitleColor="#d4b8ff"
-                description="ISO 31000 · Renstra · Balance Scorecard · Risk Register · Mitigasi Otomatis"
-                decorators={
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
-                        {[...Array(6)].map((_, i) => (
-                            <div key={i} style={{ position: 'absolute', width: `${60 + i * 30}px`, height: `${60 + i * 30}px`, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.08)', top: `${10 + i * 8}%`, right: `${-10 + i * 5}%` }} />
-                        ))}
+            {/* Background Decorative Blobs */}
+            <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '40vw', height: '40vw', background: 'radial-gradient(circle, rgba(191, 219, 254, 0.6) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
+            <div style={{ position: 'absolute', top: '30%', right: '-20%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(147, 197, 253, 0.4) 0%, transparent 70%)', filter: 'blur(50px)', zIndex: 0 }} />
+
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                style={{ position: 'relative', zIndex: 1, padding: '24px 20px', maxWidth: '600px', margin: '0 auto' }}
+            >
+                {/* Header Logo equivalent */}
+                <motion.div variants={itemVariants} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: colors.accentBlue, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ color: 'white', fontSize: '14px', fontWeight: '900' }}>MR</span>
                     </div>
-                }
-                illustration={
-                    <svg viewBox="0 0 100 100" width="90" height="90">
-                        <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
-                        <polygon points="50,22 78,36 78,64 50,78 22,64 22,36" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
-                        <polygon points="50,34 66,42 66,58 50,66 34,58 34,42" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
-                        <circle cx="50" cy="50" r="8" fill="white" opacity="0.9" />
-                        <path d="M46 50 L49 53 L55 47" stroke="#6c3fc5" strokeWidth="2" strokeLinecap="round" fill="none" />
-                    </svg>
-                }
-            />
-
-            <div style={{ padding: '20px 20px 0' }}>
-                <p style={{ fontSize: '13px', color: '#4a3a6a', lineHeight: 1.7, margin: 0 }}>
-                    Aplikasi Manajemen Risiko berbasis <strong style={{ color: '#6c3fc5' }}>ISO 31000</strong> yang terintegrasi dari Renstra dan pengukuran berbasis balance scorecard — monitoring risiko dan KPI RS berjalan simultan dalam satu platform yang komprehensif.
-                </p>
-            </div>
-
-            {/* Risk Level Visual */}
-            <div style={{ padding: '24px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'white', borderRadius: '24px', padding: '20px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-                    <h3 style={{ fontSize: '12px', fontWeight: '900', color: '#3a1a8a', letterSpacing: '1px', margin: '0 0 16px', textTransform: 'uppercase' }}>Matriks Risiko</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        {risks.map(({ level, color, items }) => (
-                            <div key={level} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <div style={{ width: '70px', flexShrink: 0, background: color, borderRadius: '8px', padding: '4px 8px', textAlign: 'center' }}>
-                                    <span style={{ fontSize: '10px', fontWeight: '800', color: 'white' }}>{level}</span>
-                                </div>
-                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                                    {items.map(item => (
-                                        <span key={item} style={{ fontSize: '11px', background: `${color}15`, color, border: `1px solid ${color}30`, borderRadius: '6px', padding: '3px 8px', fontWeight: '600' }}>{item}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <span style={{ fontSize: '16px', fontWeight: '800', color: colors.textDark, letterSpacing: '0.5px' }}>PINTAR-MR</span>
                 </motion.div>
-            </div>
 
-            {/* Features */}
-            <div style={{ padding: '16px 20px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                {features.map((f, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                        style={{ background: 'white', borderRadius: '20px', padding: '16px', boxShadow: '0 4px 16px rgba(0,0,0,0.05)' }}>
-                        <div style={{ fontSize: '24px', marginBottom: '8px' }}>{f.icon}</div>
-                        <div style={{ fontSize: '13px', fontWeight: '800', color: '#3a1a8a', marginBottom: '4px' }}>{f.title}</div>
-                        <div style={{ fontSize: '11px', color: '#6a5a8a', lineHeight: 1.5 }}>{f.desc}</div>
+                {/* Main Hero Header */}
+                <motion.h1 variants={itemVariants} style={{ fontSize: '28px', fontWeight: '900', color: colors.textDark, lineHeight: 1.2, marginBottom: '24px' }}>
+                    Sistem Manajemen Resiko Terintegrasi: Menyelaraskan Renstra & Balanced Scorecard
+                </motion.h1>
+
+                {/* Top Main Image */}
+                <motion.div variants={itemVariants} style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'flex-end', marginBottom: '32px' }}>
+                    <motion.div
+                        animate={{ y: [-10, 10, -10] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                        style={{ width: '90%', borderRadius: '24px', position: 'relative' }}
+                    >
+                        {/* We use hue-rotate to change the generated purple image to blue to perfectly match request */}
+                        <img src="/images/3d/mr_hero.png" alt="Dashboard Terintegrasi" style={{ width: '100%', height: 'auto', objectFit: 'contain', filter: 'hue-rotate(-50deg)', mixBlendMode: 'multiply' }} />
                     </motion.div>
-                ))}
-            </div>
+                </motion.div>
 
-            {/* ISO Strip */}
-            <div style={{ padding: '16px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'linear-gradient(135deg, #6c3fc5 0%, #3a1a8a 100%)', borderRadius: '24px', padding: '18px 20px', boxShadow: '0 4px 24px rgba(108,63,197,0.3)' }}>
-                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.55)', fontWeight: '700', letterSpacing: '1.5px', marginBottom: '10px' }}>ALUR MANAJEMEN RISIKO ISO 31000</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                        {['Identifikasi', 'Analisis', 'Evaluasi', 'Mitigasi', 'Monitor'].map((step, i) => (
-                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <div style={{ background: 'rgba(255,255,255,0.15)', borderRadius: '8px', padding: '5px 10px', fontSize: '11px', fontWeight: '700', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>{step}</div>
-                                {i < 4 && <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px' }}>›</span>}
+                {/* Latar Belakang Card (Left Aligned Poster Style) */}
+                <motion.div variants={itemVariants} style={{ width: '85%', background: colors.cardBg, borderRadius: '24px', padding: '24px', boxShadow: '0 15px 35px rgba(37,99,235,0.08)', marginBottom: '32px', border: `1px solid ${colors.accentLight}`, position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-40px', right: '-20px', width: '120px' }}>
+                        <motion.img
+                            animate={{ y: [-5, 5, -5] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                            src="/images/3d/mr_latar.png" alt="Latar Belakang" style={{ width: '100%', filter: 'hue-rotate(-50deg)', mixBlendMode: 'multiply' }}
+                        />
+                    </div>
+                    <h2 style={{ fontSize: '18px', fontWeight: '900', color: colors.textDark, marginBottom: '12px', marginTop: '40px', textTransform: 'uppercase' }}>
+                        Latar Belakang
+                    </h2>
+                    <p style={{ fontSize: '14px', color: colors.textMuted, lineHeight: 1.6, margin: 0 }}>
+                        Tantangan data resiko yang terfragmentasi. Aplikasi kami mengintegrasikan manajemen resiko dengan perencanaan strategis untuk mencapai target organisasi.
+                    </p>
+                </motion.div>
+
+                {/* Manfaat Integrasi Card (Right Aligned Poster Style) */}
+                <motion.div variants={itemVariants} style={{ width: '85%', marginLeft: 'auto', background: colors.cardBg, borderRadius: '24px', padding: '24px', boxShadow: '0 15px 35px rgba(37,99,235,0.08)', marginBottom: '32px', border: `1px solid ${colors.accentLight}`, position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-50px', left: '-20px', width: '120px' }}>
+                        <motion.img
+                            animate={{ y: [-5, 5, -5] }}
+                            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                            src="/images/3d/manfaat.png" alt="Manfaat" style={{ width: '100%', filter: 'hue-rotate(60deg)', mixBlendMode: 'multiply' }}
+                        />
+                    </div>
+                    <h2 style={{ fontSize: '18px', fontWeight: '900', color: colors.textDark, marginBottom: '12px', marginTop: '50px', textTransform: 'uppercase' }}>
+                        Manfaat Integrasi
+                    </h2>
+                    <ul style={{ paddingLeft: '20px', margin: 0, fontSize: '14px', color: colors.textMuted, lineHeight: 1.6, listStyleType: 'disc' }}>
+                        <li style={{ paddingBottom: '6px' }}>Visibilitas Resiko Strategis Secara Real-time.</li>
+                        <li style={{ paddingBottom: '6px' }}>Penyelarasan Mitigasi dengan Tujuan Renstra.</li>
+                        <li style={{ paddingBottom: '6px' }}>Performa BSC Berbasis Data Resiko.</li>
+                        <li>Keputusan Manajemen yang Lebih Akurat & Proaktif.</li>
+                    </ul>
+                </motion.div>
+
+                {/* Custom SVG Pathway Infographic Component */}
+                <motion.div variants={itemVariants} style={{ width: '100%', background: colors.cardBg, borderRadius: '24px', padding: '24px', boxShadow: '0 15px 35px rgba(37,99,235,0.08)', marginBottom: '32px', border: `1px solid ${colors.accentLight}` }}>
+                    <div style={{ display: 'inline-block', background: colors.accentBlue, color: 'white', fontWeight: '800', fontSize: '12px', padding: '4px 12px', borderRadius: '12px', marginBottom: '16px', transform: 'rotate(-2deg)' }}>
+                        Clinical Pathway
+                    </div>
+
+                    {/* SVG Diagram imitating the mock logic */}
+                    <div style={{ width: '100%', height: '140px', background: '#eff6ff', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+                        <svg width="100%" height="100%" viewBox="0 0 300 120" style={{ position: 'absolute' }}>
+                            <path d="M 50 60 Q 100 20 150 60 T 250 60" fill="none" stroke="#60a5fa" strokeWidth="4" strokeDasharray="6,6" />
+                            <path d="M 50 60 Q 100 100 150 60 T 250 60" fill="none" stroke="#f59e0b" strokeWidth="4" strokeDasharray="6,6" />
+                        </svg>
+
+                        <div style={{ display: 'flex', width: '100%', justifyContent: 'space-around', alignItems: 'center', zIndex: 1 }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ fontSize: '32px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>👤</div>
+                                <span style={{ fontSize: '10px', fontWeight: '800', color: colors.textDark }}>Diagnosis</span>
                             </div>
-                        ))}
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ fontSize: '32px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>🧪</div>
+                                <span style={{ fontSize: '10px', fontWeight: '800', color: colors.textDark }}>Tests</span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ fontSize: '32px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>🛡️</div>
+                                <span style={{ fontSize: '10px', fontWeight: '800', color: colors.textDark }}>Procedure</span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ fontSize: '32px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>📈</div>
+                                <span style={{ fontSize: '10px', fontWeight: '800', color: colors.textDark }}>Recovery</span>
+                            </div>
+                        </div>
                     </div>
                 </motion.div>
-            </div>
 
-            {/* Manfaat */}
-            <div style={{ padding: '16px 20px 0' }}>
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                    style={{ background: 'white', borderRadius: '24px', padding: '20px', boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
-                    <h3 style={{ fontSize: '12px', fontWeight: '900', color: '#3a1a8a', letterSpacing: '1px', margin: '0 0 12px', textTransform: 'uppercase' }}>Manfaat Utama</h3>
-                    {['Deteksi dini risiko operasional & klinis', 'Laporan risiko otomatis siap audit', 'Integrasi Renstra & KPI dalam satu platform', 'Mitigasi terstruktur berbasis evidence'].map((item, idx) => (
-                        <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '8px' }}>
-                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#6c3fc5', flexShrink: 0, marginTop: '5px' }} />
-                            <span style={{ fontSize: '13px', color: '#4a3a6a', lineHeight: 1.5 }}>{item}</span>
+                {/* Target Pengguna (Bottom Wide Card) */}
+                <motion.div variants={itemVariants} style={{ width: '100%', background: colors.cardBg, borderRadius: '24px', padding: '24px', boxShadow: '0 15px 35px rgba(37,99,235,0.08)', marginBottom: '40px', border: `1px solid ${colors.accentLight}` }}>
+                    <div style={{ position: 'relative', width: '100%', height: '140px', background: '#eff6ff', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px', overflow: 'hidden' }}>
+                        {/* We use target image and hue-rotate to blue so it matches */}
+                        <motion.img animate={{ y: [-5, 5, -5] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                            src="/images/3d/target.png" alt="Target Pengguna" style={{ height: '120%', filter: 'hue-rotate(60deg)', mixBlendMode: 'multiply' }} />
+                    </div>
+
+                    <h2 style={{ fontSize: '18px', fontWeight: '900', color: colors.textDark, marginBottom: '12px', textTransform: 'uppercase' }}>
+                        Target Pengguna
+                    </h2>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <div style={{ background: '#eff6ff', padding: '12px', borderRadius: '12px' }}>
+                            <h3 style={{ fontSize: '14px', fontWeight: '800', color: colors.textDark, margin: '0 0 4px 0' }}>Risk Officer</h3>
+                            <p style={{ fontSize: '11px', color: colors.textMuted, margin: 0 }}>Identifikasi risiko rutin.</p>
                         </div>
-                    ))}
+                        <div style={{ background: '#eff6ff', padding: '12px', borderRadius: '12px' }}>
+                            <h3 style={{ fontSize: '14px', fontWeight: '800', color: colors.textDark, margin: '0 0 4px 0' }}>Strategic Planner</h3>
+                            <p style={{ fontSize: '11px', color: colors.textMuted, margin: 0 }}>Penyelarasan Renstra.</p>
+                        </div>
+                        <div style={{ gridColumn: 'span 2', background: '#eff6ff', padding: '12px', borderRadius: '12px' }}>
+                            <h3 style={{ fontSize: '14px', fontWeight: '800', color: colors.textDark, margin: '0 0 4px 0' }}>Hospital Administrator, Komite Medik, Bagian SIMRS.</h3>
+                        </div>
+                    </div>
                 </motion.div>
-            </div>
 
-            {/* CTA */}
-            <div style={{ padding: '32px 20px 0' }}>
-                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} onClick={handleDemo}
-                    style={{ width: '100%', padding: '13px 20px', borderRadius: '16px', background: 'linear-gradient(135deg, #8b5cf6 0%, #6c3fc5 100%)', color: 'white', fontWeight: '800', fontSize: '14px', border: 'none', cursor: 'pointer', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 8px 28px rgba(108,63,197,0.4)', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%)', borderRadius: '18px 18px 0 0', pointerEvents: 'none' }} />
-                    <span style={{ fontSize: '18px' }}>🛡️</span>
-                    <span>Ajukan Demo Sekarang</span>
-                    <span style={{ fontSize: '16px', marginLeft: '2px' }}>→</span>
-                </motion.button>
-                <p style={{ textAlign: 'center', fontSize: '11px', color: '#8a7aaa', marginTop: '10px' }}>
-                    Tim kami akan menghubungi Anda untuk aktivasi akun demo eksklusif.
-                </p>
-            </div>
+                {/* CTA BUTTON */}
+                <motion.div variants={itemVariants} style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleDemo}
+                        style={{
+                            width: '100%',
+                            padding: '18px 20px',
+                            borderRadius: '100px',
+                            background: colors.orangeGrad,
+                            color: 'white',
+                            fontWeight: '900',
+                            fontSize: '18px',
+                            border: '4px solid rgba(255,255,255,0.5)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 15px 30px rgba(234, 88, 12, 0.4)',
+                            zIndex: 2,
+                            letterSpacing: '1px'
+                        }}>
+                        [ AJUKAN DEMO SEKARANG ]
+                    </motion.button>
+
+                    {/* Animated Finger Cursor (CSS Emoji) */}
+                    <motion.div
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
+                        style={{ position: 'absolute', bottom: '-25px', right: '30px', fontSize: '40px', zIndex: 3, filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.2))' }}
+                    >
+                        👆🏻
+                    </motion.div>
+                </motion.div>
+
+            </motion.div>
         </div>
     );
 };
