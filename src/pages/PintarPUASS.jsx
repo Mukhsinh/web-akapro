@@ -54,13 +54,32 @@ const PintarPUASS = () => {
     const posterInnerWidth = {
         width: '100%',
         maxWidth: '900px',
-        padding: '60px 40px',
         position: 'relative',
         zIndex: 2,
     };
 
     return (
         <div style={containerStyle}>
+            {/* INJECTED MULTI-DEVICE RESPONSIVE STYLE SHEET */}
+            <style>{`
+                .poster-padding { padding: 30px 20px; }
+                .title-wrapper { display: flex; flex-direction: column; }
+                .title-text { font-size: 26px; }
+                .diorama-wrapper { transform: scale(0.85); height: 350px !important; margin-top: 20px !important; margin-bottom: 20px !important; }
+                .info-grid { grid-template-columns: 1fr !important; gap: 20px !important; margin-bottom: 30px !important; }
+                .target-grid { grid-template-columns: 1fr !important; gap: 16px !important; padding: 30px 20px !important; margin-bottom: 30px !important; }
+                .cta-button { font-size: 16px !important; padding: 18px !important; border-width: 4px !important; }
+            
+                @media (min-width: 768px) {
+                    .poster-padding { padding: 60px 40px; }
+                    .title-text { font-size: 42px; }
+                    .diorama-wrapper { transform: scale(1); height: 450px !important; margin-top: 40px !important; margin-bottom: 60px !important; }
+                    .info-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; gap: 32px !important; margin-bottom: 50px !important; }
+                    .target-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 24px !important; padding: 40px !important; margin-bottom: 50px !important;}
+                    .cta-button { font-size: 22px !important; padding: 24px !important; border-width: 6px !important; }
+                }
+            `}</style>
+
             {/* Seamless Background Ambient Glows */}
             <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(234, 88, 12, 0.08) 0%, transparent 70%)', filter: 'blur(50px)', zIndex: 0 }} />
             <div style={{ position: 'absolute', top: '40%', right: '-15%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(253, 186, 116, 0.15) 0%, transparent 70%)', filter: 'blur(60px)', zIndex: 0 }} />
@@ -68,7 +87,7 @@ const PintarPUASS = () => {
             {/* Grid Pattern Overlay for Poster Aesthetic */}
             <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'30\' height=\'30\' viewBox=\'0 0 30 30\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 0H0v30h30V0zM29 1H1v28h28V1z\' fill=\'%23ea580c\' fill-opacity=\'0.03\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")', zIndex: 1, maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)', WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)' }} />
 
-            <div style={posterInnerWidth}>
+            <div style={posterInnerWidth} className="poster-padding">
                 {/* Header Logo */}
                 <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
                     <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 20px rgba(234, 88, 12, 0.3)' }}>
@@ -85,14 +104,14 @@ const PintarPUASS = () => {
                 </motion.div>
 
                 {/* Main Title Section */}
-                <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }} style={{ fontSize: '42px', fontWeight: '900', lineHeight: 1.2, color: '#1e293b', marginBottom: '16px', maxWidth: '100%' }}>
+                <motion.h2 className="title-text" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }} style={{ fontWeight: '900', lineHeight: 1.2, color: '#1e293b', marginBottom: '16px', maxWidth: '100%', wordWrap: 'break-word' }}>
                     Sistem Informasi Pengaduan & Survey: <br />
                     <span style={{ color: '#ea580c' }}>Mengubah Keluhan Jadi Kepercayaan</span>
                 </motion.h2>
 
                 {/* SEAMLESS CSS 3D ISOMETRIC DIORAMA */}
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-                    style={{ position: 'relative', width: '100%', height: '450px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px', marginBottom: '60px', perspective: '1200px' }}>
+                    className="diorama-wrapper" style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', perspective: '1200px' }}>
 
                     {/* The Isometric Stepped Podium Diorama */}
                     <div style={{
@@ -174,7 +193,7 @@ const PintarPUASS = () => {
                 </motion.div>
 
                 {/* Middle Info Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '32px', marginBottom: '50px' }}>
+                <div className="info-grid" style={{ display: 'grid' }}>
                     {/* Latar Belakang */}
                     <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} style={{ background: 'white', borderRadius: '32px', padding: '40px', boxShadow: '0 20px 50px rgba(234,88,12,0.08)', position: 'relative' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
@@ -211,54 +230,52 @@ const PintarPUASS = () => {
                 </div>
 
                 {/* Target Pengguna Section */}
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ background: 'white', borderRadius: '32px', padding: '40px', boxShadow: '0 20px 50px rgba(234,88,12,0.08)', marginBottom: '50px' }}>
-                    <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#1e293b', textAlign: 'center', marginBottom: '32px' }}>TARGET PENGGUNA</h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-                        {[
-                            { title: 'Customer Service', desc: 'Respon cepat front-line.', img: 'Woman%20Office%20Worker' },
-                            { title: 'Risk & Compliance', desc: 'Pemantauan indikasi fraud.', img: 'Man%20Office%20Worker' },
-                            { title: 'Manajemen / Direksi', desc: 'Analisa performa layanan.', img: 'Woman%20Technologist' }
-                        ].map((user, idx) => (
-                            <div key={idx} style={{ background: '#fff7ed', borderRadius: '24px', padding: '32px 20px', textAlign: 'center', border: '2px solid transparent', transition: 'all 0.3s ease', cursor: 'default' }}
-                                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-8px)'; e.currentTarget.style.borderColor = '#fdba74'; e.currentTarget.style.boxShadow = '0 15px 30px rgba(234,88,12,0.15)'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
-                            >
-                                <motion.img
-                                    animate={{ y: [-5, 5, -5] }}
-                                    transition={{ duration: 4, repeat: Infinity, delay: idx * 0.3 }}
-                                    src={`https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/${user.img}.png`}
-                                    alt={user.title}
-                                    style={{ width: '90px', margin: '0 auto 24px', filter: 'drop-shadow(0 15px 15px rgba(234, 88, 12, 0.2))' }}
-                                />
-                                <h4 style={{ fontSize: '16px', fontWeight: '800', color: '#ea580c', margin: '0 0 8px 0' }}>{user.title}</h4>
-                                <p style={{ fontSize: '13px', color: '#64748b', margin: 0, fontWeight: '500' }}>{user.desc}</p>
-                            </div>
-                        ))}
+                <motion.div className="target-grid" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ background: 'white', borderRadius: '32px', boxShadow: '0 20px 50px rgba(234,88,12,0.08)', display: 'grid' }}>
+                    <div style={{ gridColumn: '1 / -1' }}>
+                        <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#1e293b', textAlign: 'center', marginBottom: '16px' }}>TARGET PENGGUNA</h3>
                     </div>
+                    {[
+                        { title: 'Customer Service', desc: 'Respon cepat front-line.', img: 'Woman%20Office%20Worker' },
+                        { title: 'Risk & Compliance', desc: 'Pemantauan indikasi fraud.', img: 'Man%20Office%20Worker' },
+                        { title: 'Manajemen / Direksi', desc: 'Analisa performa layanan.', img: 'Woman%20Technologist' }
+                    ].map((user, idx) => (
+                        <div key={idx} style={{ background: '#fff7ed', borderRadius: '24px', padding: '32px 20px', textAlign: 'center', border: '2px solid transparent', transition: 'all 0.3s ease', cursor: 'default' }}
+                            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-8px)'; e.currentTarget.style.borderColor = '#fdba74'; e.currentTarget.style.boxShadow = '0 15px 30px rgba(234,88,12,0.15)'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
+                        >
+                            <motion.img
+                                animate={{ y: [-5, 5, -5] }}
+                                transition={{ duration: 4, repeat: Infinity, delay: idx * 0.3 }}
+                                src={`https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/${user.img}.png`}
+                                alt={user.title}
+                                style={{ width: '90px', margin: '0 auto 24px', filter: 'drop-shadow(0 15px 15px rgba(234, 88, 12, 0.2))' }}
+                            />
+                            <h4 style={{ fontSize: '16px', fontWeight: '800', color: '#ea580c', margin: '0 0 8px 0' }}>{user.title}</h4>
+                            <p style={{ fontSize: '13px', color: '#64748b', margin: 0, fontWeight: '500' }}>{user.desc}</p>
+                        </div>
+                    ))}
                 </motion.div>
 
                 {/* CTA Button */}
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ display: 'flex', justifyContent: 'center' }}>
                     <motion.button
+                        className="cta-button"
                         whileHover={{ scale: 1.03, boxShadow: '0 25px 45px rgba(234, 88, 12, 0.5)' }}
                         whileTap={{ scale: 0.97 }}
                         onClick={handleDemo}
                         style={{
                             width: '100%',
                             maxWidth: '600px',
-                            padding: '24px',
                             borderRadius: '30px',
                             background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
                             color: 'white',
-                            fontSize: '22px',
                             fontWeight: '900',
-                            border: '6px solid white',
                             outline: '2px solid #ea580c',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            gap: '16px',
+                            gap: '12px',
                             boxShadow: '0 20px 40px rgba(234, 88, 12, 0.4)',
                             transition: 'all 0.3s ease'
                         }}
