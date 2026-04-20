@@ -63,20 +63,17 @@ const PintarPUASS = () => {
             {/* INJECTED MULTI-DEVICE RESPONSIVE STYLE SHEET */}
             <style>{`
                 .poster-padding { padding: 30px 20px; }
-                .title-wrapper { display: flex; flex-direction: column; }
-                .title-text { font-size: 26px; }
-                .diorama-wrapper { transform: scale(0.85); height: 350px !important; margin-top: 20px !important; margin-bottom: 20px !important; }
+                .title-text { font-size: 22px; }
+                .hero-image { width: 100%; max-width: 500px; object-fit: contain; transform: scale(1.05); }
                 .info-grid { grid-template-columns: 1fr !important; gap: 20px !important; margin-bottom: 30px !important; }
-                .target-grid { grid-template-columns: 1fr !important; gap: 16px !important; padding: 30px 20px !important; margin-bottom: 30px !important; }
-                .cta-button { font-size: 16px !important; padding: 18px !important; border-width: 4px !important; }
+                .target-card { background: white; border-radius: 24px; padding: 24px; border: 1px solid rgba(253, 186, 116, 0.7); box-shadow: 0 10px 40px rgba(234, 88, 12, 0.06); }
+                .cta-button { font-size: 15px !important; padding: 18px !important; border-radius: 30px !important; }
             
                 @media (min-width: 768px) {
                     .poster-padding { padding: 60px 40px; }
-                    .title-text { font-size: 42px; }
-                    .diorama-wrapper { transform: scale(1); height: 450px !important; margin-top: 40px !important; margin-bottom: 60px !important; }
-                    .info-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; gap: 32px !important; margin-bottom: 50px !important; }
-                    .target-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 24px !important; padding: 40px !important; margin-bottom: 50px !important;}
-                    .cta-button { font-size: 22px !important; padding: 24px !important; border-width: 6px !important; }
+                    .title-text { font-size: 32px; }
+                    .info-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; margin-bottom: 50px !important; }
+                    .cta-button { font-size: 18px !important; padding: 20px !important; }
                 }
             `}</style>
 
@@ -104,92 +101,14 @@ const PintarPUASS = () => {
                 </motion.div>
 
                 {/* Main Title Section */}
-                <motion.h2 className="title-text" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }} style={{ fontWeight: '900', lineHeight: 1.2, color: '#1e293b', marginBottom: '16px', maxWidth: '100%', wordWrap: 'break-word' }}>
+                <motion.h2 className="title-text" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }} style={{ fontWeight: '900', lineHeight: 1.25, color: '#1e293b', marginBottom: '24px', maxWidth: '100%' }}>
                     Sistem Informasi Pengaduan & Survey: <br />
                     <span style={{ color: '#ea580c' }}>Mengubah Keluhan Jadi Kepercayaan</span>
                 </motion.h2>
 
-                {/* SEAMLESS CSS 3D ISOMETRIC DIORAMA */}
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-                    className="diorama-wrapper" style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', perspective: '1200px' }}>
-
-                    {/* The Isometric Stepped Podium Diorama */}
-                    <div style={{
-                        position: 'relative',
-                        width: '380px',
-                        height: '380px',
-                        transform: 'rotateX(60deg) rotateZ(-45deg)',
-                        transformStyle: 'preserve-3d'
-                    }}>
-                        {/* Tier 1: Base Layer */}
-                        <div style={{ position: 'absolute', inset: '0', background: '#ffedd5', borderRadius: '40px', boxShadow: '15px 15px 0 rgba(234, 88, 12, 0.15)', border: '4px solid white', transform: 'translateZ(0px)', transformStyle: 'preserve-3d' }} />
-
-                        {/* Tier 2: Middle Step */}
-                        <div style={{ position: 'absolute', inset: '15%', background: 'linear-gradient(135deg, #fed7aa 0%, #fdba74 100%)', borderRadius: '30px', boxShadow: '10px 10px 0 #fb923c', border: '3px solid white', transform: 'translateZ(30px)', transformStyle: 'preserve-3d' }} />
-
-                        {/* Tier 3: Top Step */}
-                        <div style={{ position: 'absolute', inset: '35%', background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)', borderRadius: '20px', boxShadow: '8px 8px 0 #9a3412', border: '2px solid #fed7aa', transform: 'translateZ(60px)', transformStyle: 'preserve-3d' }} />
-
-                        {/* Floating Links/Paths between tiers */}
-                        <motion.div animate={{ opacity: [0.3, 0.8, 0.3] }} transition={{ duration: 2, repeat: Infinity }} style={{ position: 'absolute', top: '50%', left: '20%', width: '30%', height: '4px', background: '#ea580c', transform: 'translateZ(45px) rotate(45deg)' }} />
-
-                        {/* Emojis Placed on Tiers (Elevated correctly to prevent clipping) */}
-                        {/* Main Top Center Item */}
-                        <div style={{ position: 'absolute', top: '10%', left: '15%', width: '150px', transform: 'translateZ(140px) rotateZ(45deg) rotateX(-60deg)' }}>
-                            <motion.img
-                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Desktop%20Computer.png"
-                                style={{ width: '100%', filter: 'drop-shadow(-20px 30px 15px rgba(234,88,12,0.3))' }}
-                            />
-                        </div>
-
-                        {/* Tier 2 Bottom Left */}
-                        <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: '90px', transform: 'translateZ(90px) rotateZ(45deg) rotateX(-60deg)' }}>
-                            <motion.img
-                                animate={{ y: [-15, 15, -15] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Megaphone.png"
-                                style={{ width: '100%', filter: 'drop-shadow(-15px 25px 10px rgba(234,88,12,0.4))' }}
-                            />
-                        </div>
-
-                        {/* Tier 2 Top Right */}
-                        <div style={{ position: 'absolute', top: '5%', right: '-5%', width: '110px', transform: 'translateZ(90px) rotateZ(45deg) rotateX(-60deg)' }}>
-                            <motion.img
-                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Woman%20Office%20Worker.png"
-                                style={{ width: '100%', filter: 'drop-shadow(-15px 20px 10px rgba(234,88,12,0.3))' }}
-                            />
-                        </div>
-
-                        {/* Floating around Base */}
-                        <div style={{ position: 'absolute', bottom: '25%', right: '5%', width: '80px', transform: 'translateZ(60px) rotateZ(45deg) rotateX(-60deg)' }}>
-                            <motion.img
-                                animate={{ y: [-10, 10, -10] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Bar%20Chart.png"
-                                style={{ width: '100%', filter: 'drop-shadow(-10px 15px 10px rgba(234,88,12,0.3))' }}
-                            />
-                        </div>
-
-                        {/* Little check mark floating high up */}
-                        <div style={{ position: 'absolute', top: '35%', left: '30%', width: '50px', transform: 'translateZ(180px) rotateZ(45deg) rotateX(-60deg)' }}>
-                            <motion.img
-                                animate={{ y: [-8, 8, -8] }} transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-                                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Check%20Mark%20Button.png"
-                                style={{ width: '100%', filter: 'drop-shadow(-10px 15px 10px rgba(234,88,12,0.3))' }}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Left/Right Floating Accent Cards inside Diorama */}
-                    <motion.div animate={{ y: [-10, 10, -10] }} transition={{ duration: 6, repeat: Infinity }} style={{ position: 'absolute', left: '-20px', top: '20%', background: 'white', padding: '12px 20px', borderRadius: '16px', boxShadow: '0 15px 30px rgba(234,88,12,0.15)', zIndex: 10, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '10px', height: '10px', background: '#34d399', borderRadius: '50%' }} />
-                        <span style={{ fontWeight: '800', color: '#1e293b', fontSize: '14px' }}>Real-time Data</span>
-                    </motion.div>
-
-                    <motion.div animate={{ y: [10, -10, 10] }} transition={{ duration: 5, repeat: Infinity }} style={{ position: 'absolute', right: '-20px', bottom: '20%', background: 'white', padding: '12px 20px', borderRadius: '16px', boxShadow: '0 15px 30px rgba(234,88,12,0.15)', zIndex: 10, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '10px', height: '10px', background: '#ea580c', borderRadius: '50%' }} />
-                        <span style={{ fontWeight: '800', color: '#1e293b', fontSize: '14px' }}>Eskalasi Cepat</span>
-                    </motion.div>
+                {/* STATIC HERO IMAGE (REPLACING CSS DIORAMA) */}
+                <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} style={{ width: '100%', marginBottom: '40px', display: 'flex', justifyContent: 'center', filter: 'drop-shadow(0 20px 30px rgba(234,88,12,0.15))' }}>
+                    <img src="/images/3d/hero.png" alt="PINTAR PUASS Hero" className="hero-image" />
                 </motion.div>
 
                 {/* Middle Info Grid */}
@@ -229,60 +148,60 @@ const PintarPUASS = () => {
                     </motion.div>
                 </div>
 
-                {/* Target Pengguna Section */}
-                <motion.div className="target-grid" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ background: 'white', borderRadius: '32px', boxShadow: '0 20px 50px rgba(234,88,12,0.08)', display: 'grid' }}>
-                    <div style={{ gridColumn: '1 / -1' }}>
-                        <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#1e293b', textAlign: 'center', marginBottom: '16px' }}>TARGET PENGGUNA</h3>
-                    </div>
-                    {[
-                        { title: 'Customer Service', desc: 'Respon cepat front-line.', img: 'Woman%20Office%20Worker' },
-                        { title: 'Risk & Compliance', desc: 'Pemantauan indikasi fraud.', img: 'Man%20Office%20Worker' },
-                        { title: 'Manajemen / Direksi', desc: 'Analisa performa layanan.', img: 'Woman%20Technologist' }
-                    ].map((user, idx) => (
-                        <div key={idx} style={{ background: '#fff7ed', borderRadius: '24px', padding: '32px 20px', textAlign: 'center', border: '2px solid transparent', transition: 'all 0.3s ease', cursor: 'default' }}
-                            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-8px)'; e.currentTarget.style.borderColor = '#fdba74'; e.currentTarget.style.boxShadow = '0 15px 30px rgba(234,88,12,0.15)'; }}
-                            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
-                        >
-                            <motion.img
-                                animate={{ y: [-5, 5, -5] }}
-                                transition={{ duration: 4, repeat: Infinity, delay: idx * 0.3 }}
-                                src={`https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/${user.img}.png`}
-                                alt={user.title}
-                                style={{ width: '90px', margin: '0 auto 24px', filter: 'drop-shadow(0 15px 15px rgba(234, 88, 12, 0.2))' }}
-                            />
-                            <h4 style={{ fontSize: '16px', fontWeight: '800', color: '#ea580c', margin: '0 0 8px 0' }}>{user.title}</h4>
-                            <p style={{ fontSize: '13px', color: '#64748b', margin: 0, fontWeight: '500' }}>{user.desc}</p>
-                        </div>
-                    ))}
-                </motion.div>
-
-                {/* CTA Button */}
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <motion.button
-                        className="cta-button"
-                        whileHover={{ scale: 1.03, boxShadow: '0 25px 45px rgba(234, 88, 12, 0.5)' }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={handleDemo}
-                        style={{
-                            width: '100%',
-                            maxWidth: '600px',
-                            borderRadius: '30px',
-                            background: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
-                            color: 'white',
-                            fontWeight: '900',
-                            outline: '2px solid #ea580c',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '12px',
-                            boxShadow: '0 20px 40px rgba(234, 88, 12, 0.4)',
-                            transition: 'all 0.3s ease'
-                        }}
+                {/* Target Pengguna Section (Matching Pintar UC style) */}
+                <div style={{ padding: '0 0 40px' }}>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                        className="target-card"
                     >
-                        [ AJUKAN DEMO SEKARANG ]
-                        <motion.span animate={{ x: [0, 10, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>→</motion.span>
-                    </motion.button>
+                        <div style={{ width: '100%', height: '200px', display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                            <img src="/images/3d/target.png" alt="Target Pengguna Avatars" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                        </div>
+
+                        <h3 style={{ fontSize: '14px', fontWeight: '900', color: '#ea580c', letterSpacing: '1px', textTransform: 'uppercase', margin: '0 0 16px', textAlign: 'center' }}>TARGET PENGGUNA</h3>
+
+                        <p style={{ textAlign: 'center', fontSize: '13px', color: '#475569', lineHeight: 1.6, margin: 0, fontWeight: '600' }}>
+                            Customer Service, Risk & Compliance,<br />Manajemen & Direksi.
+                        </p>
+                    </motion.div>
+                </div>
+
+                {/* --- MOCKUP CTA BUTTON (RELATIVE FLOW) --- */}
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3, type: 'spring', stiffness: 100 }}
+                    style={{ position: 'relative', marginTop: '24px', padding: '0 20px', zIndex: 10 }}
+                >
+                    <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleDemo}
+                            className="cta-button"
+                            style={{
+                                width: '100%',
+                                background: 'linear-gradient(to right, #fb923c, #ea580c)',
+                                color: 'white', fontWeight: '900',
+                                border: '2px solid rgba(255,255,255,0.4)', cursor: 'pointer',
+                                letterSpacing: '1px', textTransform: 'uppercase',
+                                boxShadow: '0 12px 30px rgba(234, 88, 12, 0.4), inset 0 -4px 10px rgba(0,0,0,0.1)',
+                                position: 'relative', overflow: 'hidden'
+                            }}
+                        >
+                            {/* Reflection spec */}
+                            <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: '30%', background: 'linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)', borderRadius: '100px 100px 0 0' }} />
+                            Ajukan Demo
+                        </motion.button>
+
+                        {/* Finger Cursor Animation overlaying button slightly */}
+                        <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: [0, -10, 0], opacity: 1 }}
+                            transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+                            style={{ position: 'absolute', bottom: '-15px', right: '10%', fontSize: '32px', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))', pointerEvents: 'none' }}
+                        >
+                            👆
+                        </motion.div>
+                    </div>
                 </motion.div>
 
             </div>
