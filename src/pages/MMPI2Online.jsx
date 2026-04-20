@@ -1,45 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { supabase } from '../lib/supabaseClient';
+import useDemo from '../hooks/useDemo';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const MMPI2Online = () => {
     const navigate = useNavigate();
-    const [waNumber, setWaNumber] = useState('');
+    const handleDemo = useDemo('MMPI-2 Online');
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        fetchWhatsappNumber();
     }, []);
-
-    const fetchWhatsappNumber = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('customer_service')
-                .select('nomor')
-                .eq('status', 'aktif')
-                .limit(1);
-
-            if (error) throw error;
-            if (data && data.length > 0) {
-                let num = data[0].nomor.replace(/\D/g, '');
-                if (num.startsWith('0')) {
-                    num = '62' + num.substring(1);
-                }
-                setWaNumber(num);
-            }
-        } catch (error) {
-            console.error('Error fetching WA number:', error);
-            setWaNumber('6285211516088');
-        }
-    };
-
-    const handleDemo = () => {
-        const text = "Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi MMPI-2 Online.";
-        const targetNumber = waNumber || '6285211516088';
-        window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`, '_blank');
-    };
 
     const containerStyle = {
         background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)', // Light Gray Dominant Gradient

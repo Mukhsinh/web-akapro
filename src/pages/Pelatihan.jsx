@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { MessageCircle, BookOpen, TrendingUp, Shield, Users, Target, Award, Briefcase, BarChart } from 'lucide-react';
+import useWhatsApp from '../hooks/useWhatsApp';
 
 const programs = [
     {
@@ -59,9 +60,11 @@ const programs = [
 ];
 
 const Pelatihan = () => {
+    const { openChat } = useWhatsApp();
+
     const handleWhatsApp = () => {
         const text = "Halo AKAPRO Indonesia, saya ingin informasi tentang program pelatihan.";
-        window.open(`https://wa.me/6285726112001?text=${encodeURIComponent(text)}`, '_blank');
+        openChat(text);
     };
 
     return (

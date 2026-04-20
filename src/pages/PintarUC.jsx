@@ -1,29 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { supabase } from '../lib/supabaseClient';
+import useDemo from '../hooks/useDemo';
 
 const PintarUC = () => {
-    const [csNumber, setCsNumber] = useState('6281234567890');
+    const handleDemo = useDemo('PINTAR UC');
 
     useEffect(() => {
         window.scrollTo(0, 0);
-
-        // Fetch Admin registered CS
-        const fetchCS = async () => {
-            const { data } = await supabase.from('customer_service').select('nomor').eq('status', 'aktif').limit(1);
-            if (data && data.length > 0) {
-                let num = data[0].nomor.replace(/\D/g, ''); // remove non-digits
-                if (num.startsWith('0')) num = '62' + num.substring(1); // format to international
-                setCsNumber(num);
-            }
-        };
-        fetchCS();
     }, []);
-
-    const handleDemo = () => {
-        const text = `Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi PINTAR UC.`;
-        window.open(`https://wa.me/${csNumber}?text=${encodeURIComponent(text)}`, '_blank');
-    };
 
     // Animation variants
     const fadeIn = {

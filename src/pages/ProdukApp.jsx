@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useWhatsApp from '../hooks/useWhatsApp';
 import { Database, ShieldCheck, MessageSquare, Landmark, BrainCircuit, X, MessageCircle, ArrowRight, User, Phone, Building, ChevronRight, ChevronLeft, Crown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -146,9 +147,11 @@ const ProdukApp = () => {
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState({ nama: '', instansi: '', noWa: '' });
 
+    const { openChat } = useWhatsApp();
+
     const handleWA = () => {
         const text = `Halo CS AKAPRO, saya tertarik untuk Demo Aplikasi: ${selectedApp?.title}\nNama: ${formData.nama}\nInstansi: ${formData.instansi}\nWA: ${formData.noWa}`;
-        window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(text)}`, '_blank');
+        openChat(text);
     };
 
     const nextStep = () => {

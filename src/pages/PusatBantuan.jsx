@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
 import { MessageCircle, MapPin, Mail, Phone } from 'lucide-react';
+import useWhatsApp from '../hooks/useWhatsApp';
 
 const PusatBantuan = () => {
+    const { openChat, whatsappNumber } = useWhatsApp();
+
     const handleWhatsApp = () => {
         const text = "Selamat Pagi, saya .... dari instansi/rumah sakit .... , berminat untuk :\n\n1. Informasi aplikasi\n2. Informasi pelatihan\n3. Submit artikel\n4. Mitra kerjasama\n\nMohon informasi lebih lanjut.";
-        window.open(`https://wa.me/6285726112001?text=${encodeURIComponent(text)}`, '_blank');
+        openChat(text);
     };
 
     return (
@@ -96,7 +99,7 @@ const PusatBantuan = () => {
                 <h3 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '20px', color: 'var(--electric-lime)' }}>
                     Informasi Kontak
                 </h3>
-                
+
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                         <div style={{
@@ -136,7 +139,7 @@ const PusatBantuan = () => {
                         </div>
                         <div>
                             <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>WhatsApp</p>
-                            <p style={{ fontSize: '14px', fontWeight: '600' }}>085726112001</p>
+                            <p style={{ fontSize: '14px', fontWeight: '600' }}>{whatsappNumber}</p>
                         </div>
                     </div>
 

@@ -1,42 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { supabase } from '../lib/supabaseClient';
+import useDemo from '../hooks/useDemo';
 
 const PintarPUASS = () => {
-    const [waNumber, setWaNumber] = useState('');
+    const handleDemo = useDemo('PINTAR PUASS');
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        fetchWhatsappNumber();
     }, []);
-
-    const fetchWhatsappNumber = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('customer_service')
-                .select('nomor')
-                .eq('status', 'aktif')
-                .limit(1);
-
-            if (error) throw error;
-            if (data && data.length > 0) {
-                let num = data[0].nomor.replace(/\D/g, '');
-                if (num.startsWith('0')) {
-                    num = '62' + num.substring(1);
-                }
-                setWaNumber(num);
-            }
-        } catch (error) {
-            console.error('Error fetching WA number:', error);
-            setWaNumber('6285211516088');
-        }
-    };
-
-    const handleDemo = () => {
-        const text = "Halo AKAPRO Indonesia, saya ingin mengajukan demo untuk aplikasi PINTAR PUASS.";
-        const targetNumber = waNumber || '6285211516088';
-        window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`, '_blank');
-    };
 
     const containerStyle = {
         background: 'linear-gradient(180deg, #fffbf7 0%, #ffedd5 100%)',

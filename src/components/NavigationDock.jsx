@@ -1,4 +1,5 @@
 ﻿import { useNavigate, useLocation } from 'react-router-dom';
+import useWhatsApp from '../hooks/useWhatsApp';
 
 const VOICE_PAGES = ['/', '/aplikasi', '/pelatihan'];
 
@@ -85,9 +86,11 @@ const NavigationDock = () => {
         { icon: (a) => <IconMitra active={a} />, path: '/mitra', label: 'Mitra', isNew: false },
     ];
 
+    const { openChat } = useWhatsApp();
+
     const handleWA = () => {
         const msg = 'Halo AKAPRO, saya ingin bertanya mengenai pelatihan dan layanan yang tersedia.';
-        window.open(`https://wa.me/6285726112001?text=${encodeURIComponent(msg)}`, '_blank');
+        openChat(msg);
     };
 
     const handleNavClick = (path, label) => {

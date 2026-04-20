@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const SUPERADMIN_EMAIL = 'mukhsinh@gmail.com';
+const SUPERADMIN_EMAIL = 'mukhsin9@gmail.com';
 
 const btnLime = {
   background: 'var(--electric-lime)',
@@ -76,17 +76,27 @@ const TabPelatihan = () => {
   const [form, setForm] = useState({ judul: '', tanggal: '', lokasi: '', harga: '', deskripsi: '', kategori: 'Manajemen Keuangan' });
 
   const load = async () => {
-    const { data } = await supabase.from('pelatihan_jadwal').select('*').order('created_at', { ascending: false });
+    const { data } = await supabase.from('pelatihan').select('*').order('created_at', { ascending: false });
     setData(data || []);
   };
 
   useEffect(() => { load(); }, []);
 
   const save = async () => {
+    const payload = {
+      judul: form.judul,
+      deskripsi: form.deskripsi,
+      tanggal_mulai: form.tanggal,
+      lokasi: form.lokasi,
+      investasi_single: parseInt(form.harga.replace(/[^0-9]/g, '')) || 0,
+      kategori: form.kategori,
+      status: 'aktif'
+    };
+
     if (modal === 'add') {
-      await supabase.from('pelatihan_jadwal').insert([form]);
+      await supabase.from('pelatihan').insert([payload]);
     } else {
-      await supabase.from('pelatihan_jadwal').update(form).eq('id', modal.id);
+      await supabase.from('pelatihan').update(payload).eq('id', modal.id);
     }
     setModal(null);
     load();
@@ -94,7 +104,7 @@ const TabPelatihan = () => {
 
   const remove = async (id) => {
     if (confirm('Hapus jadwal ini?')) {
-      await supabase.from('pelatihan_jadwal').delete().eq('id', id);
+      await supabase.from('pelatihan').delete().eq('id', id);
       load();
     }
   };
@@ -112,7 +122,8 @@ const TabPelatihan = () => {
             <div>
               <p style={{ fontSize: '12px', color: 'var(--electric-lime)', fontWeight: '800', marginBottom: '4px', textTransform: 'uppercase' }}>{item.kategori}</p>
               <h3 style={{ fontSize: '16px', fontWeight: '800', marginBottom: '4px' }}>{item.judul}</h3>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{item.tanggal} · {item.lokasi}</p>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{item.tanggal_mulai} · {item.lokasi}</p>
+              <p style={{ fontSize: '14px', fontWeight: '800', color: 'var(--electric-lime)' }}>Rp {item.investasi_single?.toLocaleString()}</p>
             </div>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button onClick={() => { setForm(item); setModal(item); }} style={{ padding: '10px', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', color: 'white', border: 'none', cursor: 'pointer' }}><Edit size={16} /></button>
@@ -177,7 +188,7 @@ const TabArtikel = () => {
           <div key={item.id} style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
               <div>
-                <span style={{ fontSize: '10px', fontWeight: '900', padding: '4px 10px', borderRadius: '10px', background: item.status === 'approved' ? 'rgba(198,255,0,0.1)' : 'rgba(255,255,255,0.05)', color: item.status === 'approved' ? 'var(--electric-lime)' : 'white', marginBottom: '8px', display: 'inline-block' }}>
+                <span style={{ fontSize: '10px', fontWeight: '900', padding: '4px 10px', borderRadius: '10px', background: item.status === 'approved' ? 'rgba(198,255,0,0.1)' : item.status === 'review' ? 'rgba(0,255,255,0.1)' : 'rgba(255,255,255,0.05)', color: item.status === 'approved' ? 'var(--electric-lime)' : item.status === 'review' ? '#00ffff' : 'white', marginBottom: '8px', display: 'inline-block' }}>
                   {item.status.toUpperCase()}
                 </span>
                 <h3 style={{ fontSize: '18px', fontWeight: '800' }}>{item.judul}</h3>
@@ -207,9 +218,12 @@ const TabArtikel = () => {
                 <h4 style={{ fontSize: '13px', fontWeight: '800', marginBottom: '16px' }}>Tindakan Moderasi</h4>
                 <input placeholder="DOI Number (jika disetujui)" style={{ ...inputStyle, marginBottom: '12px' }} value={doiInput} onChange={e => setDoiInput(e.target.value)} />
                 <textarea placeholder="Catatan untuk penulis..." style={{ ...inputStyle, minHeight: '80px', marginBottom: '16px' }} value={reviewNotes} onChange={e => setReviewNotes(e.target.value)} />
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <button onClick={() => updateStatus(modal.id, 'approved')} style={{ ...btnLime, flex: 1, justifyContent: 'center' }}><ShieldCheck size={18} /> Setujui</button>
-                  <button onClick={() => updateStatus(modal.id, 'rejected')} style={{ ...btnGhost, flex: 1, justifyContent: 'center', color: '#ff4444' }}><X size={18} /> Tolak</button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <button onClick={() => updateStatus(modal.id, 'review')} style={{ ...btnGhost, color: '#00ffff', justifyContent: 'center' }}><Clock size={18} /> Set Review</button>
+                    <button onClick={() => updateStatus(modal.id, 'rejected')} style={{ ...btnGhost, color: '#ff4444', justifyContent: 'center' }}><X size={18} /> Tolak</button>
+                  </div>
+                  <button onClick={() => updateStatus(modal.id, 'approved')} style={{ ...btnLime, width: '100%', justifyContent: 'center' }}><ShieldCheck size={18} /> Approve & Publish</button>
                 </div>
               </div>
             </div>
@@ -271,7 +285,7 @@ const TabKonten = () => {
   const [kontenForm, setKontenForm] = useState({ halaman: '', key: '', value: '', tipe: 'text' });
 
   const load = async () => {
-    const { data: cs } = await supabase.from('customer_service').select('*');
+    const { data: cs } = await supabase.from('cs_whatsapp').select('*');
     const { data: con } = await supabase.from('konten_halaman').select('*');
     setCsData(cs || []);
     setKonten(con || []);
@@ -280,12 +294,12 @@ const TabKonten = () => {
   useEffect(() => { load(); }, []);
 
   const saveCs = async () => {
-    if (csModal === 'add') await supabase.from('customer_service').insert([csForm]);
-    else await supabase.from('customer_service').update(csForm).eq('id', csModal.id);
+    if (csModal === 'add') await supabase.from('cs_whatsapp').insert([csForm]);
+    else await supabase.from('cs_whatsapp').update(csForm).eq('id', csModal.id);
     setCsModal(null); load();
   };
 
-  const deleteCs = async (id) => { if (confirm('Hapus CS ini?')) { await supabase.from('customer_service').delete().eq('id', id); load(); } };
+  const deleteCs = async (id) => { if (confirm('Hapus CS ini?')) { await supabase.from('cs_whatsapp').delete().eq('id', id); load(); } };
 
   const saveKonten = async () => {
     if (kontenModal === 'add') await supabase.from('konten_halaman').insert([kontenForm]);
@@ -398,6 +412,23 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('pelatihan');
   const [authError, setAuthError] = useState('');
+  const [pendingCount, setPendingCount] = useState(0);
+
+  const fetchPendingCount = async () => {
+    try {
+      const { count } = await supabase
+        .from('artikel')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending');
+      setPendingCount(count || 0);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    if (user) fetchPendingCount();
+  }, [user, activeTab]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -482,6 +513,19 @@ const Admin = () => {
                 display: 'flex', alignItems: 'center', gap: '10px', transition: '0.3s'
               }}>
               {tab.icon} {tab.label}
+              {tab.id === 'artikel' && (
+                <span style={{
+                  marginLeft: '8px',
+                  background: activeTab === 'artikel' ? 'black' : 'var(--electric-lime)',
+                  color: activeTab === 'artikel' ? 'var(--electric-lime)' : 'black',
+                  padding: '2px 8px',
+                  borderRadius: '100px',
+                  fontSize: '10px',
+                  fontWeight: '900'
+                }}>
+                  {pendingCount}
+                </span>
+              )}
             </button>
           ))}
         </div>

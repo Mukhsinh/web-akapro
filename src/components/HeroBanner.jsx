@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import useWhatsApp from '../hooks/useWhatsApp';
 
 const HeroBanner = () => {
+    const { openChat } = useWhatsApp();
+
     return (
         <div style={{ padding: '0 20px 20px' }}>
             <motion.div
@@ -8,7 +11,7 @@ const HeroBanner = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="glass"
                 style={{
-                    relative: 'relative',
+                    position: 'relative',
                     height: '180px',
                     overflow: 'hidden',
                     display: 'flex',
@@ -29,7 +32,7 @@ const HeroBanner = () => {
                     <button
                         onClick={() => {
                             const template = "Halo CS AKAPRO, saya ingin berkonsultasi mengenai solusi manajemen rumah sakit yang paling tepat untuk institusi kami. Mohon bantuannya.";
-                            window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(template)}`, '_blank');
+                            openChat(template);
                         }}
                         className="btn-primary"
                         style={{ padding: '10px 20px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}
